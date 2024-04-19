@@ -1,0 +1,144 @@
+{
+  "version": 3,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 22,
+    "patch": 1
+  },
+  "configurePresets": [
+    {
+      "name": "debug-config",
+      "hidden": true,
+      "binaryDir": "${sourceDir}/build/debug",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+    {
+      "name": "release-config",
+      "hidden": true,
+      "binaryDir": "${sourceDir}/build/release",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    },
+    {
+      "name": "msvc-win64",
+      "hidden": true,
+      "displayName": "Visual Studio 17 2022",
+      "description": "Using compilers for Visual Studio 17 2022 (x64 architecture)",
+      "generator": "Visual Studio 17 2022",
+      "toolset": "host=x64",
+      "architecture": "x64",
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "cl.exe",
+        "CMAKE_CXX_COMPILER": "cl.exe"
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
+    },
+    {
+      "name": "clang-unix-make",
+      "hidden": true,
+      "displayName": "Clang/Unix/Makefiles",
+      "description": "Using compilers: C = /usr/bin/clang, CXX = /usr/bin/clang++",
+      "generator": "Unix Makefiles",
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "/usr/bin/clang",
+        "CMAKE_CXX_COMPILER": "/usr/bin/clang++"
+      }
+    },
+    {
+      "name": "gcc-unix-make",
+      "hidden": true,
+      "displayName": "GCC/Unix/Makefiles",
+      "description": "Using compilers: C = /usr/bin/gcc, CXX = /usr/bin/g++",
+      "generator": "Unix Makefiles",
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "/usr/bin/gcc",
+        "CMAKE_CXX_COMPILER": "/usr/bin/g++"
+      }
+    },
+    {
+      "name": "clang-macos-make",
+      "hidden": true,
+      "inherits": ["clang-unix-make"],
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Darwin"
+      }
+    },
+    {
+      "name": "gcc-linux-make",
+      "hidden": true,
+      "inherits": ["gcc-unix-make"],
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Linux"
+      }
+    },
+    {
+      "name": "msvc-win64-debug",
+      "inherits": ["msvc-win64","debug-config"]
+    },
+    {
+      "name": "msvc-win64-release",
+      "inherits": ["msvc-win64","release-config"]
+    },
+    {
+      "name": "clang-macos-debug",
+      "inherits": ["clang-macos-make","debug-config"]
+    },
+    {
+      "name": "clang-macos-release",
+      "inherits": ["clang-macos-make","release-config"]
+    },
+    {
+      "name": "gcc-linux-debug",
+      "inherits": ["gcc-linux-make","debug-config"]
+    },
+    {
+      "name": "gcc-linux-release",
+      "inherits": ["gcc-linux-make","release-config"]
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "msvc-win64-debug",
+      "configurePreset": "msvc-win64-debug",
+      "configuration": "Debug",
+      "jobs": 4
+    },
+    {
+      "name": "msvc-win64-release",
+      "configurePreset": "msvc-win64-release",
+      "configuration": "Release",
+      "jobs": 4
+    },
+    {
+      "name": "clang-macos-debug",
+      "configurePreset": "clang-macos-debug",
+      "configuration": "Debug"
+    },
+    {
+      "name": "clang-macos-release",
+      "configurePreset": "clang-macos-release",
+      "configuration": "Release"
+    },
+    {
+      "name": "gcc-linux-debug",
+      "configurePreset": "gcc-linux-debug",
+      "configuration": "Debug"
+    },
+    {
+      "name": "gcc-linux-release",
+      "configurePreset": "gcc-linux-release",
+      "configuration": "Release"
+    }
+  ]
+}

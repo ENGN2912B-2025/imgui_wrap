@@ -1,0 +1,9 @@
+[submodule "3rd-party/imgui"]
+	path = 3rd-party/imgui
+	url = ../../ocornut/imgui.git
+[submodule "3rd-party/imgui_test_engine"]
+	path = 3rd-party/imgui_test_engine
+	url = ../../ocornut/imgui_test_engine.git
+[submodule "3rd-party/glfw"]
+	path = 3rd-party/glfw
+	url = ../../glfw/glfw.git

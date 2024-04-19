@@ -8,13 +8,6 @@
 
 #include <imgui.h>
 
-#include <stdexcept>
-
-namespace
-{
-  static int numWindows = 0;
-}
-
 namespace gui
 {
   using DefaultSizer = VerticalSizer;
@@ -58,7 +51,7 @@ namespace gui
 
     // Setup backend
     backend_ = Backend::create();
-    backend_->DpiAware = false;
+    backend_->DpiAware = true;
     backend_->SrgbFramebuffer = false;
     backend_->Vsync = true;
     backend_->ClearColor = ImVec4(0.120f, 0.120f, 0.120f, 1.000f);

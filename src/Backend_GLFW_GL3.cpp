@@ -137,6 +137,20 @@ namespace gui
     if (window == nullptr)
       return false;
     glfwMakeContextCurrent(window);
+
+    // Adjust scale
+    ImGuiIO& io = ImGui::GetIO();
+    ImFontConfig font_config;
+    font_config.OversampleH = 1;
+    font_config.OversampleV = 1;
+    font_config.PixelSnapH = true;
+    font_config.SizePixels = 17.0f * DpiScale;
+    font_config.GlyphOffset.y = 1.0f * DpiScale;
+    io.Fonts->Clear();
+    io.Fonts->AddFontDefault(&font_config);
+    io.Fonts->Build();
+    ImGui::GetStyle().ScaleAllSizes(DpiScale);
+
     return true;
   }
 

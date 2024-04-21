@@ -53,11 +53,22 @@ namespace gui
 
     uint64_t time = GetTimeInMicroseconds_();
     if (LastTime == 0)
+    {
         LastTime = time;
-    io.DeltaTime = (float)((double)(time - LastTime) / 1000000.0);
+    }
+    io.DeltaTime = static_cast<float>(time - LastTime) * 1000000.0f; // Convert to seconds
     if (io.DeltaTime <= 0.0f)
+    {
         io.DeltaTime = 0.000001f;
+    }
     LastTime = time;
+
+    // Decrement timeout
+    Timeout -= io.DeltaTime;
+    if (Timeout < 0)
+    {
+      return false;
+    }
 
     return true;
   }

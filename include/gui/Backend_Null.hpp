@@ -15,6 +15,7 @@ namespace gui
     static std::unique_ptr<Backend_Null> create();
 
     ImU64 LastTime = 0;
+    float Timeout = 1.0f; // 1 second
 
     bool InitCreateWindow(const char* window_title, ImVec2 window_size) override;
     void InitBackends() override;

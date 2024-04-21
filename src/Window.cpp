@@ -127,4 +127,9 @@ namespace gui
     }
   }
 
+  std::vector<Frame*>& Window::getFrames()
+  {
+    return frames_;
+  }
+
 } // namespace gui

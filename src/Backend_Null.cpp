@@ -56,7 +56,7 @@ namespace gui
     {
         LastTime = time;
     }
-    io.DeltaTime = static_cast<float>(time - LastTime) * 1000000.0f; // Convert to seconds
+    io.DeltaTime = static_cast<float>(time - LastTime) / 1000000.0f; // Convert to seconds
     if (io.DeltaTime <= 0.0f)
     {
         io.DeltaTime = 0.000001f;
@@ -67,6 +67,7 @@ namespace gui
     Timeout -= io.DeltaTime;
     if (Timeout < 0)
     {
+      printf("Backend_Null::Timeout\n");
       return false;
     }
 

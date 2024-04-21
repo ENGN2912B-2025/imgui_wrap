@@ -4,11 +4,14 @@
 #include <gui/Application.hpp>
 
 #ifdef USE_GUI_TEST_ENGINE
-  // Test Engine
+  #include <gui/Backend_Null.hpp>
   #include <imgui_te_engine.h>
   #include <imgui_te_ui.h>
   #include <imgui_te_utils.h>  // ImOsIsDebuggerPresent()
   #include <imgui_te_exporters.h>
+#ifdef TEST_REGISTRATION_FUNCTION
+  extern void TEST_REGISTRATION_FUNCTION(ImGuiTestEngine* engine);
+#endif // TEST_REGISTRATION_FUNCTION
   namespace
   {
     static ImGuiTestEngine* initTestEngine_()
@@ -18,9 +21,12 @@
       ImGuiTestEngineIO& test_io = ImGuiTestEngine_GetIO(engine);
       test_io.ConfigVerboseLevel = ImGuiTestVerboseLevel_Info;
       test_io.ConfigVerboseLevelOnError = ImGuiTestVerboseLevel_Debug;
-      test_io.ConfigRunSpeed = ImGuiTestRunSpeed_Cinematic; // Default to slowest mode in this demo
+      //test_io.ConfigRunSpeed = ImGuiTestRunSpeed_Cinematic; // Set to cinematic for debugging
+      test_io.ConfigNoThrottle = true; // Disable throttling by default
       //test_io.ScreenCaptureFunc = ImGuiApp_ScreenCaptureFunc;
       //test_io.ScreenCaptureUserData = (void*)app;
+      test_io.ConfigLogToTTY = true;
+      test_io.ConfigVerboseLevelOnError = ImGuiTestVerboseLevel_Warning;
 
       // Optional: save test output in junit-compatible XML format.
       //test_io.ExportResultsFile = "./results.xml";
@@ -31,7 +37,11 @@
       ImGuiTestEngine_InstallDefaultCrashHandler();
 
       // Register tests
-      //RegisterAppMinimalTests(engine);
+#ifdef TEST_REGISTRATION_FUNCTION
+      TEST_REGISTRATION_FUNCTION(engine);
+#endif // TEST_REGISTRATION_FUNCTION
+
+      ImGuiTestEngine_QueueTests(engine, ImGuiTestGroup_Tests, "all");
 
       return engine;
     }
@@ -74,7 +84,6 @@ namespace gui
 
   #ifdef USE_GUI_TEST_ENGINE
     ImGuiTestEngine* engine = initTestEngine_();
-    //TODO: Register tests -----------------------------------------------
   #endif
 
     // main loop
@@ -87,6 +96,13 @@ namespace gui
       // Call after your rendering. This is mostly to support screen/video
       //  capturing features.
       ImGuiTestEngine_PostSwap(engine);
+
+      // Exit after running all tests if backend is null
+      if (dynamic_cast<Backend_Null*>(window_->getBackendPtr())
+        && ImGuiTestEngine_IsTestQueueEmpty(engine))
+      {
+        break;
+      }
 #endif
     }
 
@@ -98,20 +114,23 @@ namespace gui
     window_->deinit();
 
   #ifdef USE_GUI_TEST_ENGINE
+    // Print test results
+    ImGuiTestEngine_PrintResultSummary(engine);
+
+    // Get number of number of successful tests
+    int count_tested, count_success;
+    ImGuiTestEngine_GetResult(engine, count_tested, count_success);
+
     // IMPORTANT: we need to destroy the Dear ImGui context BEFORE the test
     //  engine context, so .ini data may be saved.
     ImGuiTestEngine_DestroyContext(engine);
 
-    ImGuiTestEngine_PrintResultSummary(engine);
-
-    int count_tested = 0;
-    int count_success = 0;
-    ImGuiTestEngine_GetResult(engine, count_tested, count_success);
+    // Exit with error if not all tests passed
     if (count_tested != count_success)
     {
        exit(EXIT_FAILURE); // Error
     }
-    exit(EXIT_SUCCESS); // OK
+    //exit(EXIT_SUCCESS); // OK
   #endif
   }
 

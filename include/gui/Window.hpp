@@ -47,6 +47,9 @@ namespace gui
 
     void addFrame(Frame* frame);
     void removeFrame(Frame* frame);
+    std::vector<Frame*>& getFrames();
+
+    Backend* getBackendPtr() { return backend_.get(); }
   };
 
 } // namespace gui

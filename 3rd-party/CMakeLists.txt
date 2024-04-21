@@ -20,8 +20,6 @@ add_library(imgui STATIC
 )
 
 target_include_directories(imgui PUBLIC ${IMGUI_DIR} ${IMGUI_DIR}/backends)
-target_link_libraries(imgui PUBLIC glfw)
-#target_compile_definitions(imgui PUBLIC -DGL_SILENCE_DEPRECATION)
 target_compile_definitions(imgui
   PUBLIC -DIMGUI_USER_CONFIG="${CMAKE_CURRENT_LIST_DIR}/imconfig.h")
 
@@ -36,6 +34,8 @@ if (USE_GLFW_GL3)
       -DUSE_GLFW_GL3
       -DGLFW_HAS_PER_MONITOR_DPI=1
   )
+
+  target_link_libraries(imgui PUBLIC glfw)
 
   if (WIN32)
     target_link_libraries(imgui PUBLIC "opengl32")

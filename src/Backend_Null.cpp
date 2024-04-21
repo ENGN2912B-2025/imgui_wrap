@@ -28,7 +28,7 @@ namespace gui
     ImGuiIO& io = ImGui::GetIO();
     io.DisplaySize = window_size;
     io.BackendFlags |= ImGuiBackendFlags_RendererHasVtxOffset | ImGuiBackendFlags_HasMouseCursors;
-    //io.Fonts->Build();
+    io.Fonts->Build();
 #if IMGUI_VERSION_NUM < 18603
     for (int n = 0; n < ImGuiKey_COUNT; n++)
         io.KeyMap[n] = n;

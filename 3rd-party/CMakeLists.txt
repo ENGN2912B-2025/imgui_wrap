@@ -9,17 +9,15 @@ if (USE_GLFW_GL3)
 endif(USE_GLFW_GL3)
 
 # Dear ImGui #################################################################
-set(IMGUI_DIR ${CMAKE_CURRENT_LIST_DIR}/imgui)
 
 add_library(imgui STATIC
   imgui/imgui.cpp
-  #imgui/imgui_demo.cpp
   imgui/imgui_draw.cpp
   imgui/imgui_tables.cpp
   imgui/imgui_widgets.cpp
 )
 
-target_include_directories(imgui PUBLIC ${IMGUI_DIR} ${IMGUI_DIR}/backends)
+target_include_directories(imgui PUBLIC imgui imgui/backends)
 target_compile_definitions(imgui
   PUBLIC -DIMGUI_USER_CONFIG="${CMAKE_CURRENT_LIST_DIR}/imconfig.h")
 
@@ -48,11 +46,25 @@ if (USE_GLFW_GL3)
 endif(USE_GLFW_GL3)
 
 # Dear ImGui Test Engine #####################################################
-set(IMGUI_TEST_ENGINE_DIR ${CMAKE_CURRENT_LIST_DIR}/imgui_test_engine)
+if (USE_GUI_TEST_ENGINE)
 
-# add_library(imgui_app STATIC
-#   ${IMGUI_TEST_ENGINE_DIR}/shared/imgui_app.h
-#   ${IMGUI_TEST_ENGINE_DIR}/shared/imgui_app.cpp
-# )
-# target_include_directories(imgui_app PUBLIC ${IMGUI_TEST_ENGINE_DIR}/shared)
-# target_link_libraries(imgui_app PUBLIC imgui)
+  add_library(imgui_test_engine STATIC
+    imgui_test_engine/imgui_test_engine/imgui_capture_tool.cpp
+    imgui_test_engine/imgui_test_engine/imgui_te_context.cpp
+    imgui_test_engine/imgui_test_engine/imgui_te_coroutine.cpp
+    imgui_test_engine/imgui_test_engine/imgui_te_engine.cpp
+    imgui_test_engine/imgui_test_engine/imgui_te_exporters.cpp
+    imgui_test_engine/imgui_test_engine/imgui_te_perftool.cpp
+    imgui_test_engine/imgui_test_engine/imgui_te_ui.cpp
+    imgui_test_engine/imgui_test_engine/imgui_te_utils.cpp
+  )
+
+  target_include_directories(imgui_test_engine
+    PUBLIC imgui_test_engine/imgui_test_engine)
+
+  target_link_libraries(imgui_test_engine PUBLIC imgui)
+
+  target_compile_definitions(imgui_test_engine
+    PUBLIC -DUSE_GUI_TEST_ENGINE)
+
+endif(USE_GUI_TEST_ENGINE)

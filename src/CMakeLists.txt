@@ -17,7 +17,9 @@ target_include_directories(imgui_wrap
 )
 
 if (USE_GLFW_GL3)
-  target_sources(imgui_wrap PRIVATE
-    Backend_GLFW_GL3.cpp
-  )
-endif()
+  target_sources(imgui_wrap PRIVATE Backend_GLFW_GL3.cpp)
+endif(USE_GLFW_GL3)
+
+if (USE_GUI_TEST_ENGINE)
+  target_link_libraries(imgui_wrap PUBLIC imgui_test_engine)
+endif(USE_GUI_TEST_ENGINE)

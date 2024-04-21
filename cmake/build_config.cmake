@@ -21,10 +21,15 @@ if(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
   set(LINUX TRUE)
 endif()
 
+option(USE_GLFW_GL3 "Enable GLFW/OpenGL3 backend" ON)
+option(USE_GUI_TEST_ENGINE "Enable Dear ImGui test engine" OFF)
+
 if(MSVC)
   add_compile_options(/permissive-)
-  set(CMAKE_EXE_LINKER_FLAGS
-    "${CMAKE_EXE_LINKER_FLAGS} /SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup")
+  if (NOT USE_GUI_TEST_ENGINE)
+    set(CMAKE_EXE_LINKER_FLAGS
+      "${CMAKE_EXE_LINKER_FLAGS} /SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup")
+  endif()
 endif()
 
 if(XCODE)
@@ -39,5 +44,3 @@ endif()
 
 include(git_submodule)
 #include(file_embed)
-
-option(USE_GLFW_GL3 "Enable GLFW/OpenGL3 backend" ON)

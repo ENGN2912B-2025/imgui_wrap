@@ -67,4 +67,9 @@ if (USE_GUI_TEST_ENGINE)
   target_compile_definitions(imgui_test_engine
     PUBLIC -DUSE_GUI_TEST_ENGINE)
 
+  if (LINUX)
+    target_compile_options(imgui_test_engine
+      PRIVATE -Wno-unused-result -Wno-deprecated-enum-enum-conversion)
+  endif()
+
 endif(USE_GUI_TEST_ENGINE)

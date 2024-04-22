@@ -34,4 +34,4 @@ fi
 
 echo "Building ${PRESET_NAME}"
 
-cmake --preset "${PRESET_NAME}"&&cmake --build --preset "${PRESET_NAME}"
+cmake --preset "${PRESET_NAME}"&&cmake --build --preset "${PRESET_NAME}" -j

@@ -13,7 +13,7 @@ permissions:
 jobs:
 
   build:
-    name: Ubuntu-Build
+    name: Ubuntu-Build (GLFW_GL3)
     runs-on: ubuntu-latest
     steps:
 
@@ -34,7 +34,7 @@ jobs:
       run: ${{github.workspace}}/build.sh
 
   build-tests:
-    name: Ubuntu-Build with tests
+    name: Ubuntu-Build (Tests)
     runs-on: ubuntu-latest
 
     env:
@@ -49,4 +49,7 @@ jobs:
     - name: Configure and Build
       run: |
         cmake --preset ${{ env.PRESET_NAME }} ${{ env.CMAKE_CONFIG_OPTIONS }} && \
-        cmake --build --preset "${{ env.PRESET_NAME }}"
+        cmake --build --preset "${{ env.PRESET_NAME }}" -j
+
+    - name: Run Tests
+      run: ${{github.workspace}}/build/release/bin/hello_gui >> $GITHUB_STEP_SUMMARY

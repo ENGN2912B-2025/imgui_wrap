@@ -3,6 +3,7 @@ name: GitHub Workflow
 on:
   push:
     branches: [ main ]
+  workflow_dispatch: # manually trigger the workflow
 
 permissions:
   checks: write
@@ -10,17 +11,14 @@ permissions:
   contents: read
 
 jobs:
+
   build:
     name: Ubuntu-Build
-
-    # The CMake configure and build commands are platform agnostic and should
-    # work equally well on Windows or Mac. You can convert this to a matrix
-    # build if you need cross-platform coverage.
-    # See: https://docs.github.com/en/free-pro-team@latest/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v4
+
+    - name: Checkout source code
+      uses: actions/checkout@v4
 
     - name: Install Linux Dependencies
       run: |
@@ -34,3 +32,21 @@ jobs:
 
     - name: Configure and Build
       run: ${{github.workspace}}/build.sh
+
+  build-tests:
+    name: Ubuntu-Build with tests
+    runs-on: ubuntu-latest
+
+    env:
+      PRESET_NAME: gcc-linux-release
+      CMAKE_CONFIG_OPTIONS: -DUSE_GLFW_GL3=0 -DUSE_GUI_TEST_ENGINE=1
+
+    steps:
+
+    - name: Checkout source code
+      uses: actions/checkout@v4
+
+    - name: Configure and Build
+      run: |
+        cmake --preset ${{ env.PRESET_NAME }} ${{ env.CMAKE_CONFIG_OPTIONS }} && \
+        cmake --build --preset "${{ env.PRESET_NAME }}"

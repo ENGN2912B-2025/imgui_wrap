@@ -1,6 +1,6 @@
 //  Copyright (c) 2024 Daniel Moreno. All rights reserved.
 //
-#include <gui/Backend_GLFW_GL3.hpp>
+#include "Backend_GLFW_GL3.hpp"
 
 #include <imgui_impl_opengl3.h>
 #include <imgui_impl_opengl3_loader.h>
@@ -10,7 +10,7 @@
 #include <cmath>
 
 #ifdef __linux__
-#include <unistd.h> // sleep
+# include <unistd.h> // sleep
 #endif
 
 namespace

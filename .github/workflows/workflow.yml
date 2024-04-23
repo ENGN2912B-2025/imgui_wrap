@@ -54,5 +54,5 @@ jobs:
     - name: Run Tests
       run: |
         export GUI_TEST_MARKDOWN_REPORT_FILE=${{github.workspace}}/gui_test_report.md
-        ${{github.workspace}}/build/release/bin/hello_gui_test
+        ${{github.workspace}}/build/release/bin/hello_gui
         cat $GUI_TEST_MARKDOWN_REPORT_FILE >> $GITHUB_STEP_SUMMARY

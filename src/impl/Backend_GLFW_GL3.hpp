@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include <gui/Backend.hpp>
+#include "Backend.hpp"
 
 // forward declaration
 struct GLFWwindow;

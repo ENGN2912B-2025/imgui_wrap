@@ -160,15 +160,13 @@ namespace gui
           os << "- " << test->Name << "\n";
         }
       }
+      os << "\n";
     }
 
-    const bool failed{ count_success != count_tested };
+    const bool success{ count_success == count_tested };
     os
-      << "\n"
-      << "<span style='color: " << (failed ? "red" : "green") << ";'>"
       << "Tests Result: "
-      << count_success << "/" << count_tested << " tests passed"
-      << "</span>"
-      << "\n";
+      << (success ? "✅" : "❌")
+      << count_success << "/" << count_tested << " tests passed\n";
   }
 }

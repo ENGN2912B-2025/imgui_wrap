@@ -4,11 +4,14 @@
 #include <gui/Application.hpp>
 
 #ifdef USE_GUI_TEST_ENGINE
-  #include <gui/Backend_Null.hpp>
+  #include "impl/Backend_Null.hpp"
+  #include "impl/TestReporter.hpp"
   #include <imgui_te_engine.h>
   #include <imgui_te_ui.h>
   #include <imgui_te_utils.h>  // ImOsIsDebuggerPresent()
   #include <imgui_te_exporters.h>
+  #include <iostream>
+  #include <fstream>
 #ifdef TEST_REGISTRATION_FUNCTION
   extern void TEST_REGISTRATION_FUNCTION(ImGuiTestEngine* engine);
 #endif // TEST_REGISTRATION_FUNCTION
@@ -114,8 +117,21 @@ namespace gui
     window_->deinit();
 
   #ifdef USE_GUI_TEST_ENGINE
-    // Print test results
-    ImGuiTestEngine_PrintResultSummary(engine);
+    { // Print test results
+      //ImGuiTestEngine_PrintResultSummary(engine);
+      auto reporter = TestReporter::makeDefault();
+      reporter->generateReport(engine, std::cout);
+    }
+
+    { // Create a markdown report
+      const char* filename{ std::getenv("GUI_TEST_MARKDOWN_REPORT_FILE") };
+      if (filename)
+      {
+        std::ofstream os{ filename };
+        auto reporter = std::make_unique<TestReporterMarkdown>();
+        reporter->generateReport(engine, os);
+      }
+    }
 
     // Get number of number of successful tests
     int count_tested, count_success;

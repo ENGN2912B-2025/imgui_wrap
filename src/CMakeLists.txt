@@ -1,12 +1,13 @@
 
 add_library(imgui_wrap STATIC
-  Backend.cpp
-  Backend_Null.cpp
   Application.cpp
   Window.cpp
   Frame.cpp
   Sizer.cpp
   VerticalSizer.cpp
+  # private files
+  impl/Backend.cpp
+  impl/Backend_Null.cpp
 )
 
 target_link_libraries(imgui_wrap PUBLIC imgui)
@@ -17,9 +18,10 @@ target_include_directories(imgui_wrap
 )
 
 if (USE_GLFW_GL3)
-  target_sources(imgui_wrap PRIVATE Backend_GLFW_GL3.cpp)
+  target_sources(imgui_wrap PRIVATE impl/Backend_GLFW_GL3.cpp)
 endif(USE_GLFW_GL3)
 
 if (USE_GUI_TEST_ENGINE)
+  target_sources(imgui_wrap PRIVATE impl/TestReporter.cpp)
   target_link_libraries(imgui_wrap PUBLIC imgui_test_engine)
 endif(USE_GUI_TEST_ENGINE)

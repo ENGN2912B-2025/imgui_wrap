@@ -4,7 +4,14 @@ PRESET_NAME=$1
 HOST_OS=$OS$OSTYPE
 HOST_TYPE=$HOSTTYPE
 HOST_ID="${HOST_OS}-${HOST_TYPE}"
-HOST_ID=${HOST_ID,,} # Convert to lowercase
+
+# Convert HOST_ID to lowercase
+if ((BASH_VERSINFO[0] < 3))
+then
+  HOST_ID=$(tr '[:lower:]' '[:upper:]' <<< $HOST_ID)
+else
+  HOST_ID=${HOST_ID,,}
+fi
 
 echo "Host OS: $HOST_OS"
 echo "Host Type: $HOST_TYPE"

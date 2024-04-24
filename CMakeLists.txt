@@ -2,8 +2,7 @@ cmake_minimum_required(VERSION 3.22.1)
 
 project(imgui_wrap)
 
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
-include(build_config)
+include(cmake/build_config.cmake)
 
 add_subdirectory(3rd-party)
 add_subdirectory(src)

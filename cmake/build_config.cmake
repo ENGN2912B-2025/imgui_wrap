@@ -42,7 +42,7 @@ if(XCODE)
   endif()
 endif()
 
-include(git_submodule)
+include(cmake/git_submodule.cmake)
 
 checkout_submodules(${PROJECT_SOURCE_DIR}/3rd-party/imgui)
 if(USE_GLFW_GL3)

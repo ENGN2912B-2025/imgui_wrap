@@ -93,6 +93,9 @@ namespace gui
     while (window_->renderBegin())
     {
       window_->render();
+#if defined(USE_GUI_TEST_ENGINE) && defined(SHOW_TEST_ENGINE_WINDOWS)
+      ImGuiTestEngine_ShowTestEngineWindows(engine, NULL);
+#endif
       window_->renderEnd();
 
 #ifdef USE_GUI_TEST_ENGINE

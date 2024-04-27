@@ -1,8 +1,6 @@
 //  Copyright (c) 2024 Daniel Moreno. All rights reserved.
 //
 
-#pragma once
-
 #include <gui/imgui_stdlib.hpp>
 
 #include <imgui.h>

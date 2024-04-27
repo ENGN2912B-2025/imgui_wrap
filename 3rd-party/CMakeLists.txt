@@ -65,8 +65,12 @@ if (USE_GUI_TEST_ENGINE)
 
   target_link_libraries(imgui_test_engine PUBLIC imgui)
 
-  target_compile_definitions(imgui_test_engine
-    PUBLIC -DUSE_GUI_TEST_ENGINE)
+  # We set USE_GUI_TEST_ENGINE define in `imgui` instead of `imgui_test_engine`
+  # because this define affects the values of `imconfig.h` which is included
+  # in `imgui` and other places. In this way, anything that links to `imgui`
+  # will have the same values for `imconfig.h` and will have this define set,
+  # including `imgui_test_engine`.
+  target_compile_definitions(imgui PUBLIC -DUSE_GUI_TEST_ENGINE)
 
   if (LINUX)
     target_compile_options(imgui_test_engine

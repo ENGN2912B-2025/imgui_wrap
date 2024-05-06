@@ -40,7 +40,7 @@ namespace gui
     const Vec2i& size,
     int flags) :
       name_{name},
-      id_{generateIdentifier_(reinterpret_cast<uint64_t>(this))},
+      id_{name + "_" + generateIdentifier_(reinterpret_cast<uint64_t>(this))},
       pos_{pos},
       size_{size},
       flags_{ flags < 0 ? kDefaultFlags : flags}
@@ -64,8 +64,7 @@ namespace gui
     ImGui::SetNextWindowPos(pos_.to<float>());
     ImGui::SetNextWindowSize(size_.to<float>());
     ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
-    const std::string frameId{ name_ + "_" + id_ };
-    return ImGui::Begin(frameId.c_str(), nullptr, flags_);
+    return ImGui::Begin(id_.c_str(), nullptr, flags_);
   }
 
   void Frame::renderEnd()
@@ -87,6 +86,16 @@ namespace gui
   void Frame::setSize(const Vec2i& size)
   {
     size_ = size;
+  }
+
+  const std::string& Frame::getName() const
+  {
+    return name_;
+  }
+
+  const std::string& Frame::getId() const
+  {
+    return id_;
   }
 
 } // namespace gui

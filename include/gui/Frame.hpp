@@ -30,6 +30,9 @@ namespace gui
 
     void setPosition(const Vec2i& pos);
     void setSize(const Vec2i& size);
+
+    const std::string& getName() const;
+    const std::string& getId() const;
   };
 
 } // namespace gui

@@ -3,9 +3,9 @@
 
 #pragma once
 
-#include <string>
+#include <string_view>
 
 namespace ImGui
 {
-  void Text(const std::string fmt, ...);
+  void Text(std::string_view text);
 }

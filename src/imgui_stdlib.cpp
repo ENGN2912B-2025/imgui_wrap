@@ -7,11 +7,8 @@
 
 namespace ImGui
 {
-  void Text(const std::string fmt, ...)
+  void Text(std::string_view text)
   {
-    va_list args;
-    va_start(args, fmt);
-    ImGui::TextV(fmt.c_str(), args);
-    va_end(args);
+    ImGui::TextUnformatted(text.data(), text.data() + text.size());
   }
 }

@@ -7,6 +7,8 @@
 
 #include <iostream>
 
+DECLARE_APPLICATION(gui::Application) // Test if this compiles correctly
+
 void registerHelloGuiTests(ImGuiTestEngine* e)
 {
   ImGuiTest* t = NULL;
@@ -21,9 +23,7 @@ void registerHelloGuiTests(ImGuiTestEngine* e)
   t->GuiFunc = [](ImGuiTestContext* ctx)
   {
     IM_UNUSED(ctx);
-    auto app = gui::Application::getInstancePtr();
-    auto& window = app->getWindow();
-    auto& frames = window.getFrames();
+    auto& frames = getApp().getWindow().getFrames();
     IM_CHECK_GE(frames.size(), 1);
     auto framePtr = frames.front();
     IM_CHECK(framePtr);

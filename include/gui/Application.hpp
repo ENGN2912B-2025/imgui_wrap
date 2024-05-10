@@ -27,10 +27,26 @@ namespace gui
     void run();
   };
 
-  // Declares `getApp()` function that returns a reference to the global
-  //  application instance.
-  #define DECLARE_APPLICATION(ApplicationClass) \
-    ApplicationClass& getApp() { \
-      return static_cast<ApplicationClass&>(*Application::getInstancePtr()) }
-
 } // namespace gui
+
+// Declares `getApp()` function that returns a reference to the global
+//  application instance.
+//
+// Usage:
+// ```cpp
+// class MyApplication : public Application
+// {
+//   ...
+// };
+//
+// DECLARE_APPLICATION(MyApplication)
+//
+// int main()
+// {
+//   getApp().run();
+//   return 0;
+// }
+// ```
+#define DECLARE_APPLICATION(ApplicationClass) \
+  inline ApplicationClass& getApp() { \
+    return static_cast<ApplicationClass&>(*::gui::Application::getInstancePtr()); }

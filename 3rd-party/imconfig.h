@@ -3,6 +3,9 @@
 
 #include <array>
 
+// Enable math operators for ImVec2
+#define IMGUI_DEFINE_MATH_OPERATORS
+
 #define IM_VEC2_CLASS_EXTRA \
     ImVec2(std::array<float,2> a) { x = a[0]; y = a[1]; }
 

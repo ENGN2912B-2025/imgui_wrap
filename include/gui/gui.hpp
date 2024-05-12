@@ -4,8 +4,9 @@
 #pragma once
 
 #include <gui/Types.hpp>
-#include <gui/Application.hpp>
+#include <gui/Rect.hpp>
 #include <gui/Frame.hpp>
+#include <gui/Application.hpp>
 
 #include <gui/imgui_stdlib.hpp>
 

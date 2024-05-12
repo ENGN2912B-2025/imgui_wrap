@@ -9,16 +9,16 @@ namespace gui
   {
   }
 
-  void Sizer::addFrame(Frame* frame)
+  void Sizer::add(Rect* child)
   {
-    frames_.push_back(frame);
+    children_.push_back(child);
   }
 
-  void Sizer::removeFrame(Frame* frame)
+  void Sizer::remove(Rect* child)
   {
-    frames_.erase(
-      std::remove(frames_.begin(), frames_.end(), frame),
-      frames_.end());
+    children_.erase(
+      std::remove(children_.begin(), children_.end(), child),
+      children_.end());
   }
 
 } // namespace gui

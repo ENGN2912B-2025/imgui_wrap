@@ -3,25 +3,22 @@
 
 #pragma once
 
-#include <gui/Types.hpp>
+#include <gui/Rect.hpp>
 
 #include <vector>
 
 namespace gui
 {
-  // forward declarations
-  class Frame;
-
   class Sizer
   {
-    std::vector<Frame*> frames_;
+    std::vector<Rect*> children_;
   public:
     virtual ~Sizer() = 0;
 
-    const std::vector<Frame*>& getFrames() const { return frames_; }
+    const std::vector<Rect*>& getChildren() const { return children_; }
 
-    void addFrame(Frame* frame);
-    void removeFrame(Frame* frame);
+    void add(Rect* child);
+    void remove(Rect* child);
 
     virtual void apply(const Vec2i& size) = 0;
   };

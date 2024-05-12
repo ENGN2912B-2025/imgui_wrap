@@ -10,27 +10,27 @@ namespace gui
 {
   void VerticalSizer::apply(const Vec2i& size)
   {
-    auto& frames{ getFrames() };
-    if (frames.empty())
+    auto& children{ getChildren() };
+    if (children.empty())
     {
       return;
     }
 
-    const int n{ static_cast<int>(frames.size()) };
+    const int n{ static_cast<int>(children.size()) };
     const int dy{ static_cast<int>(size.y) / n };
 
-    Vec2i framePos{ 0, 0 };
-    Vec2i frameSize{ static_cast<int>(size.x), dy };
-    for (auto frame : frames)
+    Vec2i childPos{ 0, 0 };
+    Vec2i childSize{ static_cast<int>(size.x), dy };
+    for (auto child : children)
     {
-      frame->setPosition(framePos);
-      frame->setSize(frameSize);
-      framePos.y += dy;
+      child->setPosition(childPos);
+      child->setSize(childSize);
+      childPos.y += dy;
     }
 
-    //ensure last frame fills the remaining space
-    frameSize.y += static_cast<int>(size.y) % dy;
-    frames.back()->setSize(frameSize);
+    //ensure last child fills the remaining space
+    childSize.y += static_cast<int>(size.y) % dy;
+    children.back()->setSize(childSize);
   }
 
 } // namespace gui

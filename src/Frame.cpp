@@ -39,10 +39,9 @@ namespace gui
     const Vec2i& pos,
     const Vec2i& size,
     int flags) :
+      Rect{pos, size},
       name_{name},
       id_{name + "_" + generateIdentifier_(reinterpret_cast<uint64_t>(this))},
-      pos_{pos},
-      size_{size},
       flags_{ flags < 0 ? kDefaultFlags : flags}
   {
     if (auto app = Application::getInstancePtr())
@@ -61,8 +60,8 @@ namespace gui
 
   bool Frame::renderBegin()
   {
-    ImGui::SetNextWindowPos(pos_.to<float>());
-    ImGui::SetNextWindowSize(size_.to<float>());
+    ImGui::SetNextWindowPos(getPosition().to<float>());
+    ImGui::SetNextWindowSize(getSize().to<float>());
     ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
     return ImGui::Begin(id_.c_str(), nullptr, flags_);
   }
@@ -76,16 +75,6 @@ namespace gui
   void Frame::render()
   {
 
-  }
-
-  void Frame::setPosition(const Vec2i& pos)
-  {
-    pos_ = pos;
-  }
-
-  void Frame::setSize(const Vec2i& size)
-  {
-    size_ = size;
   }
 
   const std::string& Frame::getName() const

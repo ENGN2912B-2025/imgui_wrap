@@ -3,18 +3,16 @@
 
 #pragma once
 
-#include <gui/Types.hpp>
+#include <gui/Rect.hpp>
 
 #include <string>
 
 namespace gui
 {
-  class Frame
+  class Frame : public Rect
   {
     std::string name_;
     std::string id_;
-    Vec2i pos_;
-    Vec2i size_;
     int flags_;
   public:
     Frame(
@@ -27,9 +25,6 @@ namespace gui
     bool renderBegin();
     void renderEnd();
     virtual void render();
-
-    void setPosition(const Vec2i& pos);
-    void setSize(const Vec2i& size);
 
     const std::string& getName() const;
     const std::string& getId() const;

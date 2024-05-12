@@ -112,7 +112,7 @@ namespace gui
     frames_.push_back(frame);
     if (sizer_)
     {
-      sizer_->addFrame(frame);
+      sizer_->add(frame);
     }
   }
 
@@ -123,7 +123,7 @@ namespace gui
       frames_.end());
     if (sizer_)
     {
-      sizer_->removeFrame(frame);
+      sizer_->remove(frame);
     }
   }
 

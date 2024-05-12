@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include <gui/Rect.hpp>
+#include <gui/Widget.hpp>
 
 #include <vector>
 
@@ -21,6 +21,43 @@ namespace gui
     void remove(Rect* child);
 
     virtual void apply(const Vec2i& size) = 0;
+  };
+
+  class NewSizer : public Widget
+  {
+  public:
+    virtual ~NewSizer() = 0;
+  };
+
+  class StackSizer : public NewSizer
+  {
+  public:
+    enum class Direction
+    {
+      Vertical,
+      Horizontal,
+    };
+
+    StackSizer(Direction direction);
+
+    void draw() override;
+
+    void apply();
+
+  private:
+    Direction direction_;
+  };
+
+  class VerticalSizer2 : public StackSizer
+  {
+  public:
+    VerticalSizer2();
+  };
+
+  class HorizontalSizer2 : public StackSizer
+  {
+  public:
+    HorizontalSizer2();
   };
 
 } // namespace gui

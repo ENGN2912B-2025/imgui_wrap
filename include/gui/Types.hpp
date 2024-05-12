@@ -25,7 +25,68 @@ namespace gui
     {
       return {static_cast<U>(x), static_cast<U>(y)};
     }
+
+    Vec2 operator+(const Vec2& other) const
+    {
+      return {x + other.x, y + other.y};
+    }
+
+    Vec2 operator-(const Vec2& other) const
+    {
+      return {x - other.x, y - other.y};
+    }
+
+    Vec2& operator+=(const Vec2& other)
+    {
+      x += other.x;
+      y += other.y;
+      return *this;
+    }
+
+    Vec2& operator-=(const Vec2& other)
+    {
+      x -= other.x;
+      y -= other.y;
+      return *this;
+    }
+
+    Vec2 operator*(T scalar) const
+    {
+      return {x * scalar, y * scalar};
+    }
+
+    Vec2 operator/(T scalar) const
+    {
+      return {x / scalar, y / scalar};
+    }
+
+    Vec2& operator*=(T scalar)
+    {
+      x *= scalar;
+      y *= scalar;
+      return *this;
+    }
+
+    Vec2& operator/=(T scalar)
+    {
+      x /= scalar;
+      y /= scalar;
+      return *this;
+    }
+
   };
+
+  template <typename T>
+  Vec2<T> operator*(T scalar, const Vec2<T>& vec)
+  {
+    return vec * scalar;
+  }
+
+  template <typename T>
+  Vec2<T> operator/(T scalar, const Vec2<T>& vec)
+  {
+    return {scalar / vec.x, scalar / vec.y};
+  }
 
   using Vec2i = Vec2<int>;
 
@@ -34,6 +95,13 @@ namespace gui
   {
     using T = typename V::value_type;
     return V{static_cast<T>(x), static_cast<T>(y)};
+  }
+
+  template <typename V, typename U>
+  static V make(const U& u)
+  {
+    using T = typename V::value_type;
+    return V{static_cast<T>(u.x), static_cast<T>(u.y)};
   }
 
 } // namespace gui

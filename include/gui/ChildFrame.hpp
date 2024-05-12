@@ -9,16 +9,16 @@
 
 namespace gui
 {
-  class Frame : public Widget
+  class ChildFrame : public Widget
   {
-    int flags_;
+    int childFlags_;
   public:
-    Frame(
+    ChildFrame(
       const std::string& name = {},
       const Vec2i& pos = {0, 0},
       const Vec2i& size = {0, 0},
-      int flags = -1);
-    virtual ~Frame();
+      int childFlags = -1);
+    virtual ~ChildFrame();
 
     bool renderBegin() override;
     void renderEnd() override;

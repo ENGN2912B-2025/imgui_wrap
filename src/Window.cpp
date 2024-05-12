@@ -77,8 +77,7 @@ namespace gui
     }
 
     //Update size in case window was resized
-    ImVec2 size = ImGui::GetIO().DisplaySize;
-    size_ = make<Vec2i>(size.x, size.y);
+    size_ = make<Vec2i>(ImGui::GetIO().DisplaySize);
 
     //Adjust frame sizes
     if (sizer_)

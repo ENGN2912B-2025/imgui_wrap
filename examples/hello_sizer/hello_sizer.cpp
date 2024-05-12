@@ -1,0 +1,67 @@
+//  Copyright (c) 2024 Daniel Moreno. All rights reserved.
+//
+
+#include <gui/gui.hpp>
+
+class TopFrame : public gui::ChildFrame
+{
+public:
+  void render() override
+  {
+    ImGui::Text("Top Frame");
+  }
+};
+
+class BottomFrame : public gui::ChildFrame
+{
+public:
+  void render() override
+  {
+    ImGui::Text("Bottom Frame");
+  }
+};
+
+class LeftFrame : public gui::ChildFrame
+{
+public:
+  void render() override
+  {
+    ImGui::Text("Left Frame");
+  }
+};
+
+class MainWindow : public gui::Frame
+{
+public:
+  void render() override
+  {
+    gui::VerticalSizer2 verticalSizer;
+    TopFrame topFrame;
+    BottomFrame bottomFrame;
+    verticalSizer.addChild(&topFrame);
+    verticalSizer.addChild(&bottomFrame);
+
+    gui::HorizontalSizer2 horizontalSizer;
+    LeftFrame leftFrame;
+    horizontalSizer.addChild(&leftFrame);
+    horizontalSizer.addChild(&verticalSizer);
+
+    horizontalSizer.setSize(getContentSize());
+    horizontalSizer.setPosition(getContentMin());
+    horizontalSizer.draw();
+  }
+};
+
+int main(int argc, char** argv)
+{
+  // Create the application
+  gui::Application app{ "GUI: Hello Sizer!" };
+
+  // Create the main window
+  MainWindow mainWindow;
+
+  // Run the application
+  app.run();
+
+  return 0;
+}

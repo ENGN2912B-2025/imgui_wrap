@@ -1,14 +1,18 @@
 
 add_library(imgui_wrap STATIC
+  # public files
+  Widget.cpp
   Application.cpp
   Window.cpp
   Frame.cpp
+  ChildFrame.cpp
   Sizer.cpp
   VerticalSizer.cpp
   imgui_stdlib.cpp
   # private files
   impl/Backend.cpp
   impl/Backend_Null.cpp
+  impl/util.cpp
 )
 
 target_link_libraries(imgui_wrap PUBLIC imgui)

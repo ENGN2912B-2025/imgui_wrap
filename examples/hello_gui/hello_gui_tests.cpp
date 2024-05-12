@@ -2,6 +2,7 @@
 //
 
 #include <gui/gui.hpp>
+#include <gui/TestManager.hpp>
 
 #include <imgui_te_context.h>
 
@@ -9,6 +10,7 @@
 
 DECLARE_APPLICATION(gui::Application) // Test if this compiles correctly
 
+REGISTER_TEST(registerHelloGuiTests)
 void registerHelloGuiTests(ImGuiTestEngine* e)
 {
   ImGuiTest* t = NULL;

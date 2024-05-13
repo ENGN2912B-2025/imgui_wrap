@@ -35,13 +35,13 @@ class MainWindow : public gui::Frame
 public:
   void render() override
   {
-    gui::VerticalSizer2 verticalSizer;
+    gui::VerticalSizer verticalSizer;
     TopFrame topFrame;
     BottomFrame bottomFrame;
     verticalSizer.addChild(&topFrame, 3);
     verticalSizer.addChild(&bottomFrame);
 
-    gui::HorizontalSizer2 horizontalSizer;
+    gui::HorizontalSizer horizontalSizer;
     LeftFrame leftFrame;
     horizontalSizer.addWithFixedSize(&leftFrame, 200);
     horizontalSizer.addChild(&verticalSizer, 3);

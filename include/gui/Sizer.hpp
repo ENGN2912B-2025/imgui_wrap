@@ -9,27 +9,13 @@
 
 namespace gui
 {
-  class Sizer
+  class Sizer : public Widget
   {
-    std::vector<Rect*> children_;
   public:
     virtual ~Sizer() = 0;
-
-    const std::vector<Rect*>& getChildren() const { return children_; }
-
-    void add(Rect* child);
-    void remove(Rect* child);
-
-    virtual void apply(const Vec2i& size) = 0;
   };
 
-  class NewSizer : public Widget
-  {
-  public:
-    virtual ~NewSizer() = 0;
-  };
-
-  class StackSizer : public NewSizer
+  class StackingSizer : public Sizer
   {
   public:
     enum class Direction
@@ -38,7 +24,7 @@ namespace gui
       Horizontal,
     };
 
-    StackSizer(Direction direction);
+    StackingSizer(Direction direction);
 
     void addChild(Widget* child, int weight = 1);
 
@@ -53,16 +39,16 @@ namespace gui
     std::vector<int> weights_;
   };
 
-  class VerticalSizer2 : public StackSizer
+  class VerticalSizer : public StackingSizer
   {
   public:
-    VerticalSizer2();
+    VerticalSizer();
   };
 
-  class HorizontalSizer2 : public StackSizer
+  class HorizontalSizer : public StackingSizer
   {
   public:
-    HorizontalSizer2();
+    HorizontalSizer();
   };
 
 } // namespace gui

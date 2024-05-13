@@ -7,10 +7,10 @@
 
 namespace gui
 {
-  class VerticalSizer : public Sizer
-  {
-  public:
-    void apply(const Vec2i& size) override;
-  };
+  // class VerticalSizer : public Sizer
+  // {
+  // public:
+  //   void apply(const Vec2i& size) override;
+  // };
 
 } // namespace gui

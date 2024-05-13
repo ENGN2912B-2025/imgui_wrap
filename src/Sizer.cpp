@@ -15,29 +15,13 @@ namespace gui
   {
   }
 
-  void Sizer::add(Rect* child)
-  {
-    children_.push_back(child);
-  }
-
-  void Sizer::remove(Rect* child)
-  {
-    children_.erase(
-      std::remove(children_.begin(), children_.end(), child),
-      children_.end());
-  }
-
-  NewSizer::~NewSizer()
-  {
-  }
-
-  StackSizer::StackSizer(Direction direction) :
-    NewSizer{},
+  StackingSizer::StackingSizer(Direction direction) :
+    Sizer{},
     direction_{direction}
   {
   }
 
-  void StackSizer::addChild(Widget* child, int weight)
+  void StackingSizer::addChild(Widget* child, int weight)
   {
     while (weights_.size() < getChildren().size())
     {
@@ -47,29 +31,33 @@ namespace gui
     {
       throw std::invalid_argument("weight must be greater than 0");
     }
-    NewSizer::addChild(child);
+    Sizer::addChild(child);
     weights_.push_back(weight);
   }
 
-  void StackSizer::addWithFixedSize(Widget* child, int size)
+  void StackingSizer::addWithFixedSize(Widget* child, int size)
   {
     addChild(child);
     weights_.back() = -size; // negative size indicates fixed size
   }
 
-  void StackSizer::draw()
+  void StackingSizer::draw()
   {
     apply();
-    NewSizer::draw();
+    Sizer::draw();
   }
 
-  void StackSizer::apply()
+  void StackingSizer::apply()
   {
     std::vector<Widget*> children{ getChildren() };
     const int numChildren{ static_cast<int>(children.size()) };
     if (numChildren == 0)
     { //no children, nothing to do
       return;
+    }
+    if (weights_.size() < numChildren)
+    {
+      weights_.resize(numChildren, 1);
     }
 
     const bool isVertical{ direction_ == Direction::Vertical };
@@ -144,13 +132,13 @@ namespace gui
     }
   }
 
-  VerticalSizer2::VerticalSizer2()
-    : StackSizer{Direction::Vertical}
+  VerticalSizer::VerticalSizer()
+    : StackingSizer{Direction::Vertical}
   {
   }
 
-  HorizontalSizer2::HorizontalSizer2()
-    : StackSizer{Direction::Horizontal}
+  HorizontalSizer::HorizontalSizer()
+    : StackingSizer{Direction::Horizontal}
   {
   }
 

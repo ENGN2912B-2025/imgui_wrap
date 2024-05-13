@@ -79,12 +79,6 @@ namespace gui
     //Update size in case window was resized
     size_ = make<Vec2i>(ImGui::GetIO().DisplaySize);
 
-    //Adjust frame sizes
-    if (sizer_)
-    {
-      sizer_->apply(size_);
-    }
-
     ImGui::NewFrame();
     return true;
   }
@@ -98,11 +92,20 @@ namespace gui
   void Window::render()
   {
     // Render frames
-    for (auto frame : frames_)
+    if (sizer_)
     {
-      frame->renderBegin();
-      frame->render();
-      frame->renderEnd();
+      sizer_->setSize(size_);
+      sizer_->setPosition({0, 0});
+      sizer_->draw();
+    }
+    else
+    {
+      for (auto frame : frames_)
+      {
+        frame->renderBegin();
+        frame->render();
+        frame->renderEnd();
+      }
     }
   }
 
@@ -111,7 +114,7 @@ namespace gui
     frames_.push_back(frame);
     if (sizer_)
     {
-      sizer_->add(frame);
+      sizer_->addChild(frame);
     }
   }
 
@@ -122,7 +125,7 @@ namespace gui
       frames_.end());
     if (sizer_)
     {
-      sizer_->remove(frame);
+      sizer_->removeChild(frame);
     }
   }
 

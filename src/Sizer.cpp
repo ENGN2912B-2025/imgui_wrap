@@ -6,6 +6,7 @@
 #include <imgui.h>
 
 #include <cassert>
+#include <numeric>
 
 namespace gui
 {
@@ -35,6 +36,16 @@ namespace gui
   {
   }
 
+  void StackSizer::addChild(Widget* child, int weight)
+  {
+    while (weights_.size() < getChildren().size())
+    {
+      weights_.push_back(1);
+    }
+    NewSizer::addChild(child);
+    weights_.push_back(weight);
+  }
+
   void StackSizer::draw()
   {
     apply();
@@ -43,7 +54,8 @@ namespace gui
 
   void StackSizer::apply()
   {
-    const int numChildren{ static_cast<int>(getChildren().size()) };
+    std::vector<Widget*> children{ getChildren() };
+    const int numChildren{ static_cast<int>(children.size()) };
     if (numChildren == 0)
     { //no children, nothing to do
       return;
@@ -51,97 +63,65 @@ namespace gui
 
     const bool isVertical{ direction_ == Direction::Vertical };
 
-    const Vec2i size{ getSize() };
+    const Vec2i totalSize{ getSize() };
     const Vec2i space{ getItemSpacing() };
 
-    const int adjustSize{ isVertical ? size.y : size.x };
+    const int adjustSize{ isVertical ? totalSize.y : totalSize.x };
     const int adjustSpace{ isVertical ? space.y : space.x };
 
-#if 0
-    const int otherSize{ isVertical ? size.x - 2*space.x : size.y - 2*space.y };
+    const int otherSize{ isVertical ? totalSize.x : totalSize.y };
 
-    // Regular size for all children
-    // -----------------------------
-    // size = space + childSize + space + .... + space
-    // size = space * (numChildren + 1) + childSize * numChildren
-    // childSize = (size - space * (numChildren + 1)) / numChildren
-    const int childSize{ std::max(0,
-      (adjustSize - adjustSpace * (numChildren + 1)) / numChildren) };
-    const int lastChildSize{ adjustSize
-      - (numChildren + 1) * adjustSpace - (numChildren - 1) * childSize };
-    assert((numChildren - 1) *childSize
-      + lastChildSize + (numChildren + 1) * adjustSpace == adjustSize);
-
-    // Apply to children
-    Vec2i pos{ getPosition() + space };
-    if (isVertical)
-    {
-      for (auto& child : getChildren())
-      {
-        child->setSize(Vec2i{ otherSize, childSize });
-        child->setPosition(pos);
-        pos.y += childSize + adjustSpace;
-      }
-      { // handle last child
-        auto& lastChild{ getChildren().back() };
-        lastChild->setSize(Vec2i{ otherSize, lastChildSize });
-      }
-    }
-    else
-    {
-      for (auto& child : getChildren())
-      {
-        child->setSize(Vec2i{ childSize, otherSize });
-        child->setPosition(pos);
-        pos.x += childSize + adjustSpace;
-      }
-      { // handle last child
-        auto& lastChild{ getChildren().back() };
-        lastChild->setSize(Vec2i{ lastChildSize, otherSize });
-      }
-    }
-#else
-    const int otherSize{ isVertical ? size.x : size.y };
-
-    // Regular size for all children
+    // Weighted size for all children
     // -----------------------------
     // size = childSize + space + ... + childSize
-    // size = space * (numChildren - 1) + childSize * numChildren
-    // childSize = (size - space * (numChildren - 1)) / numChildren
+    // size = space * (numChildren - 1) + childSize * totalWeight
+    // childSize = (size - space * (numChildren - 1)) / totalWeight
+    const int totalWeight{ std::accumulate(weights_.begin(), weights_.end(), 0) };
     const int childSize{ std::max(0,
-      (adjustSize - adjustSpace * (numChildren - 1)) / numChildren) };
+      (adjustSize - adjustSpace * (numChildren - 1)) / totalWeight) };
     const int lastChildSize{ adjustSize
-      - (numChildren - 1) * (adjustSpace + childSize) };
+      - (numChildren - 1) * adjustSpace - (totalWeight - 1) * childSize };
 
     // Apply to children
     Vec2i pos{ getPosition() };
     if (isVertical)
     {
-      for (auto& child : getChildren())
+      for (int i = 0; i < numChildren - 1; ++i)
       {
-        child->setSize(Vec2i{ otherSize, childSize });
+        auto& child{ children[i] };
+        const int weight{ weights_[i] };
+        const int size{ weight * childSize };
+        child->setSize(Vec2i{ otherSize, size });
         child->setPosition(pos);
-        pos.y += childSize + adjustSpace;
+        pos.y += size + adjustSpace;
       }
       { // handle last child
-        auto& lastChild{ getChildren().back() };
-        lastChild->setSize(Vec2i{ otherSize, lastChildSize });
+        auto& lastChild{ children.back() };
+        const int weight{ weights_.back() };
+        const int size{ (weight - 1) * childSize + lastChildSize };
+        lastChild->setSize(Vec2i{ otherSize, size});
+        lastChild->setPosition(pos);
       }
     }
     else
     {
-      for (auto& child : getChildren())
+      for (int i = 0; i < numChildren - 1; ++i)
       {
-        child->setSize(Vec2i{ childSize, otherSize });
+        auto& child{ children[i] };
+        const int weight{ weights_[i] };
+        const int size{ weight * childSize };
+        child->setSize(Vec2i{ size, otherSize });
         child->setPosition(pos);
-        pos.x += childSize + adjustSpace;
+        pos.x += size + adjustSpace;
       }
       { // handle last child
-        auto& lastChild{ getChildren().back() };
-        lastChild->setSize(Vec2i{ lastChildSize, otherSize });
+        auto& lastChild{ children.back() };
+        const int weight{ weights_.back() };
+        const int size{ (weight - 1) * childSize + lastChildSize };
+        lastChild->setSize(Vec2i{ size, otherSize });
+        lastChild->setPosition(pos);
       }
     }
-#endif
   }
 
   VerticalSizer2::VerticalSizer2()

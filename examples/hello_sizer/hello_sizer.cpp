@@ -38,13 +38,13 @@ public:
     gui::VerticalSizer2 verticalSizer;
     TopFrame topFrame;
     BottomFrame bottomFrame;
-    verticalSizer.addChild(&topFrame);
+    verticalSizer.addChild(&topFrame, 3);
     verticalSizer.addChild(&bottomFrame);
 
     gui::HorizontalSizer2 horizontalSizer;
     LeftFrame leftFrame;
     horizontalSizer.addChild(&leftFrame);
-    horizontalSizer.addChild(&verticalSizer);
+    horizontalSizer.addChild(&verticalSizer, 3);
 
     horizontalSizer.setSize(getContentSize());
     horizontalSizer.setPosition(getContentMin());

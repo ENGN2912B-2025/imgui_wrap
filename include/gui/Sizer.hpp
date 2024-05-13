@@ -40,12 +40,15 @@ namespace gui
 
     StackSizer(Direction direction);
 
+    void addChild(Widget* child, int weight = 1);
+
     void draw() override;
 
     void apply();
 
   private:
     Direction direction_;
+    std::vector<int> weights_;
   };
 
   class VerticalSizer2 : public StackSizer

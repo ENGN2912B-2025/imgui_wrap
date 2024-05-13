@@ -7,6 +7,8 @@
 #include <gui/Rect.hpp>
 #include <gui/Widget.hpp>
 #include <gui/Sizer.hpp>
+#include <gui/VerticalSizer.hpp>
+#include <gui/HorizontalSizer.hpp>
 #include <gui/Frame.hpp>
 #include <gui/ChildFrame.hpp>
 #include <gui/Application.hpp>

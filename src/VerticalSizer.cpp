@@ -2,11 +2,12 @@
 //
 
 #include <gui/VerticalSizer.hpp>
-#include <gui/Frame.hpp>
-
-#include <cmath>
 
 namespace gui
 {
+  VerticalSizer::VerticalSizer()
+    : StackingSizer{Direction::Vertical}
+  {
+  }
 
 } // namespace gui

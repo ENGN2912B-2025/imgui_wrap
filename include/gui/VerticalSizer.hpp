@@ -3,14 +3,14 @@
 
 #pragma once
 
-#include <gui/Sizer.hpp>
+#include <gui/StackingSizer.hpp>
 
 namespace gui
 {
-  // class VerticalSizer : public Sizer
-  // {
-  // public:
-  //   void apply(const Vec2i& size) override;
-  // };
+  class VerticalSizer : public StackingSizer
+  {
+  public:
+    VerticalSizer();
+  };
 
 } // namespace gui

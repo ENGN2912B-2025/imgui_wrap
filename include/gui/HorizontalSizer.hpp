@@ -3,14 +3,14 @@
 
 #pragma once
 
-#include <gui/Widget.hpp>
+#include <gui/StackingSizer.hpp>
 
 namespace gui
 {
-  class Sizer : public Widget
+  class HorizontalSizer : public StackingSizer
   {
   public:
-    virtual ~Sizer() = 0;
+    HorizontalSizer();
   };
 
 } // namespace gui

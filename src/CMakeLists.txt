@@ -7,7 +7,9 @@ add_library(imgui_wrap STATIC
   Frame.cpp
   ChildFrame.cpp
   Sizer.cpp
+  StackingSizer.cpp
   VerticalSizer.cpp
+  HorizontalSizer.cpp
   imgui_stdlib.cpp
   # private files
   impl/Backend.cpp

@@ -42,6 +42,8 @@ namespace gui
 
     void addChild(Widget* child, int weight = 1);
 
+    void addWithFixedSize(Widget* child, int size);
+
     void draw() override;
 
     void apply();

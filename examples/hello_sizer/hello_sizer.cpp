@@ -43,7 +43,7 @@ public:
 
     gui::HorizontalSizer2 horizontalSizer;
     LeftFrame leftFrame;
-    horizontalSizer.addChild(&leftFrame);
+    horizontalSizer.addWithFixedSize(&leftFrame, 200);
     horizontalSizer.addChild(&verticalSizer, 3);
 
     horizontalSizer.setSize(getContentSize());

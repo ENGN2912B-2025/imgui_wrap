@@ -7,6 +7,7 @@
 
 #include <cassert>
 #include <numeric>
+#include <stdexcept>
 
 namespace gui
 {
@@ -42,8 +43,18 @@ namespace gui
     {
       weights_.push_back(1);
     }
+    if (weight < 1)
+    {
+      throw std::invalid_argument("weight must be greater than 0");
+    }
     NewSizer::addChild(child);
     weights_.push_back(weight);
+  }
+
+  void StackSizer::addWithFixedSize(Widget* child, int size)
+  {
+    addChild(child);
+    weights_.back() = -size; // negative size indicates fixed size
   }
 
   void StackSizer::draw()
@@ -66,60 +77,69 @@ namespace gui
     const Vec2i totalSize{ getSize() };
     const Vec2i space{ getItemSpacing() };
 
-    const int adjustSize{ isVertical ? totalSize.y : totalSize.x };
+    // Size of weighted children
+    // -------------------------
+    // size = childSize + space + ... + childSize
+    // size = space * (numChildren - 1) + childSize * totalWeight
+    // childSize = (size - space * (numChildren - 1)) / totalWeight
+
+    int totalWeight{ 0 }, fixedSize{ 0 }, lastWeightedIndex{ 0 };
+    for (int i = 0; i < numChildren; ++i)
+    {
+      const int weight{ weights_[i] };
+      if (weight > 0)
+      {
+        totalWeight += weight;
+        lastWeightedIndex = i;
+      }
+      else
+      {
+        fixedSize -= weight;
+      }
+    }
+
+    const int adjustSize{ (isVertical ? totalSize.y : totalSize.x) - fixedSize };
     const int adjustSpace{ isVertical ? space.y : space.x };
 
     const int otherSize{ isVertical ? totalSize.x : totalSize.y };
 
-    // Weighted size for all children
-    // -----------------------------
-    // size = childSize + space + ... + childSize
-    // size = space * (numChildren - 1) + childSize * totalWeight
-    // childSize = (size - space * (numChildren - 1)) / totalWeight
-    const int totalWeight{ std::accumulate(weights_.begin(), weights_.end(), 0) };
     const int childSize{ std::max(0,
-      (adjustSize - adjustSpace * (numChildren - 1)) / totalWeight) };
-    const int lastChildSize{ adjustSize
-      - (numChildren - 1) * adjustSpace - (totalWeight - 1) * childSize };
+      (adjustSize - (numChildren - 1) * adjustSpace) / totalWeight) };
+    const int leftOverSize{ adjustSize
+      - (numChildren - 1) * adjustSpace - totalWeight * childSize };
 
     // Apply to children
     Vec2i pos{ getPosition() };
     if (isVertical)
     {
-      for (int i = 0; i < numChildren - 1; ++i)
+      for (int i = 0; i < numChildren; ++i)
       {
         auto& child{ children[i] };
-        const int weight{ weights_[i] };
-        const int size{ weight * childSize };
+        int weight{ weights_[i] };
+        int size{ weight < 0 ? -weight : weight * childSize };
+        if (i == lastWeightedIndex)
+        {
+          size += leftOverSize;
+        }
         child->setSize(Vec2i{ otherSize, size });
         child->setPosition(pos);
         pos.y += size + adjustSpace;
       }
-      { // handle last child
-        auto& lastChild{ children.back() };
-        const int weight{ weights_.back() };
-        const int size{ (weight - 1) * childSize + lastChildSize };
-        lastChild->setSize(Vec2i{ otherSize, size});
-        lastChild->setPosition(pos);
-      }
     }
     else
     {
-      for (int i = 0; i < numChildren - 1; ++i)
+      for (int i = 0; i < numChildren; ++i)
       {
         auto& child{ children[i] };
-        const int weight{ weights_[i] };
-        const int size{ weight * childSize };
+        int weight{ weights_[i] };
+        int size{ weight < 0 ? -weight : weight * childSize };
+        if (i == lastWeightedIndex)
+        {
+          size += leftOverSize;
+        }
         child->setSize(Vec2i{ size, otherSize });
         child->setPosition(pos);
         pos.x += size + adjustSpace;
-      }
-      { // handle last child
-        auto& lastChild{ children.back() };
-        const int weight{ weights_.back() };
-        const int size{ (weight - 1) * childSize + lastChildSize };
-        lastChild->setSize(Vec2i{ size, otherSize });
-        lastChild->setPosition(pos);
       }
     }
   }

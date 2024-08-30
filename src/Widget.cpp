@@ -6,6 +6,7 @@
 #include "impl/util.hpp"
 
 #include <imgui.h>
+#include <imgui_internal.h> // For ImGui::GetWindowContentRegionMin/Max
 
 #include <stdexcept>
 
@@ -95,12 +96,18 @@ namespace gui
 
   Vec2i Widget::getContentMin() const
   {
-    return gui::make<gui::Vec2i>(ImGui::GetWindowContentRegionMin());
+    // This functionality was provided by ImGui::GetWindowContentRegionMin()
+    // which is now deprecated. The following code is a workaround.
+    ImGuiWindow* window = ImGui::GetCurrentContext()->CurrentWindow;
+    return gui::make<gui::Vec2i>(window->ContentRegionRect.Min - window->Pos);
   }
 
   Vec2i Widget::getContentMax() const
   {
-    return gui::make<gui::Vec2i>(ImGui::GetWindowContentRegionMax());
+    // This functionality was provided by ImGui::GetWindowContentRegionMax()
+    // which is now deprecated. The following code is a workaround.
+    ImGuiWindow* window = ImGui::GetCurrentContext()->CurrentWindow;
+    return gui::make<gui::Vec2i>(window->ContentRegionRect.Max - window->Pos);
   }
 
   Vec2i Widget::getContentSize() const

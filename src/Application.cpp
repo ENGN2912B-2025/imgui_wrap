@@ -117,7 +117,6 @@ namespace gui
 
   #ifdef USE_GUI_TEST_ENGINE
     { // Print test results
-      //ImGuiTestEngine_PrintResultSummary(engine);
       auto reporter = TestReporter::makeDefault();
       reporter->generateReport(engine, std::cout);
     }

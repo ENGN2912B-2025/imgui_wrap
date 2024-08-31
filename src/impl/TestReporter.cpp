@@ -22,7 +22,7 @@ namespace gui
   {
     enum class ColorCode
     {
-      Default, Red, Green, Yellow, Cyan
+      Default, Red, Green, Yellow, Cyan, Orange
     };
 
     std::string setColor(ColorCode color)
@@ -33,6 +33,8 @@ namespace gui
         case ColorCode::Green:  return "\033[32m";
         case ColorCode::Yellow: return "\033[33m";
         case ColorCode::Cyan:   return "\033[36m";
+        case ColorCode::Orange: return "\033[33m";
+        case ColorCode::Default:
         default:
          break;
       }
@@ -110,6 +112,20 @@ namespace gui
     enableAnsiEscape(os, true, &wasAnsiEnabled);
 #endif
 
+    if (count_tested == 0)
+    {
+      try
+      {
+        os
+          << setColor(ColorCode::Orange)
+          << "No tests were run!\n";
+      }
+      catch(const std::exception& e)
+      {
+      }
+      return;
+    }
+
     if (count_success < count_tested)
     {
       os << "\nFailing tests:\n";
@@ -149,6 +165,12 @@ namespace gui
     int count_tested = 0;
     int count_success = 0;
     ImGuiTestEngine_GetResult(engine, count_tested, count_success);
+
+    if (count_tested == 0)
+    {
+      os << "⛔ No tests were run!\n";
+      return;
+    }
 
     if (count_success < count_tested)
     {

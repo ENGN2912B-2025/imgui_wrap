@@ -1,0 +1,19 @@
+diff --git a/src/nsgl_context.m b/src/nsgl_context.m
+index daa8367a..65596c01 100644
+--- a/src/nsgl_context.m
++++ b/src/nsgl_context.m
+@@ -204,7 +204,8 @@ GLFWbool _glfwCreateContextNSGL(_GLFWwindow* window,
+     NSOpenGLPixelFormatAttribute attribs[40];
+     int index = 0;
+ 
+-    ADD_ATTRIB(NSOpenGLPFAAccelerated);
++    //ADD_ATTRIB(NSOpenGLPFAAccelerated);
++    ADD_ATTRIB(NSOpenGLPFARendererID); ADD_ATTRIB(kCGLRendererGenericFloatID);
+     ADD_ATTRIB(NSOpenGLPFAClosestPolicy);
+ 
+     if (ctxconfig->nsgl.offline)
+@@ -381,4 +382,3 @@ GLFWAPI id glfwGetNSGLContext(GLFWwindow* handle)
+ }
+ 
+ #endif // _GLFW_COCOA
+-

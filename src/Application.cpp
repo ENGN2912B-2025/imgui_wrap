@@ -99,9 +99,15 @@ namespace gui
       //  capturing features.
       ImGuiTestEngine_PostSwap(engine);
 
-      // Exit after running all tests if backend is null
-      if (dynamic_cast<Backend_Null*>(window_->getBackendPtr())
-        && ImGuiTestEngine_IsTestQueueEmpty(engine))
+      // Exit after running all tests if backend is null,
+      // or if GUI_EXIT_AFTER_TESTING is set to 1
+      const bool GUI_EXIT_AFTER_TESTING{
+        std::getenv("GUI_EXIT_AFTER_TESTING") != nullptr
+        && std::string{ std::getenv("GUI_EXIT_AFTER_TESTING") } == "1" };
+      const bool USE_NULL_BACKEND{
+        dynamic_cast<Backend_Null*>(window_->getBackendPtr()) != nullptr };
+      if (ImGuiTestEngine_IsTestQueueEmpty(engine)
+        && (GUI_EXIT_AFTER_TESTING || USE_NULL_BACKEND))
       {
         break;
       }

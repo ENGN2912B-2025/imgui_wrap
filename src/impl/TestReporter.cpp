@@ -33,7 +33,7 @@ namespace gui
         case ColorCode::Green:  return "\033[32m";
         case ColorCode::Yellow: return "\033[33m";
         case ColorCode::Cyan:   return "\033[36m";
-        case ColorCode::Orange: return "\033[33m";
+        case ColorCode::Orange: return "\033[38;5;208m";  // This uses the 256-color mode to approximate orange
         case ColorCode::Default:
         default:
          break;

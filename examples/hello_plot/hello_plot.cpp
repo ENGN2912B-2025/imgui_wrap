@@ -3,11 +3,15 @@
 
 #include <gui/gui.hpp>
 
+#include <cmath>
+
+// Data for the bar plot
 constexpr int kNumBars{ 11 };
 float bar_x[kNumBars]{ 0.0f, 0.1f, 0.2f, 0.3f, 0.4f, 0.5f, 0.6f, 0.7f, 0.8f, 0.9f, 1.0f };
 float bar_y[kNumBars]{ 0.1f, 0.2f, 0.3f, 0.4f, 0.5f, 0.6f, 0.7f, 0.8f, 0.9f, 1.0f, 0.8f };
 constexpr double kBarSize{ 0.08 };
 
+// Data for the line plot
 constexpr int kNumPts{ 1000 };
 float x_data[1000];
 float y_data[1000];
@@ -39,7 +43,7 @@ public:
         {
           const ImPlotRect& limits{ *reinterpret_cast<ImPlotRect*>(data) };
           const double x{ (idx / 1000.0 - limits.X.Min) / (limits.X.Max - limits.X.Min) };
-          const double y{ 0.5 * sin(x * 2 * 3.14159) + 0.5};
+          const double y{ 0.5 * std::sin(x * 2 * 3.14159) + 0.5};
           return ImPlotPoint(x,y);
         },
         &limits,
@@ -96,7 +100,7 @@ int main(int argc, char** argv)
   for (int i = 0; i < kNumPts; ++i)
   {
     x_data[i] = i / static_cast<float>(kNumPts);
-    y_data[i] = 0.5f* sin(2*PI * x_data[i]) + 0.5f;
+    y_data[i] = 0.5f * std::sin(2*PI * x_data[i]) + 0.5f;
   }
 
   // Create the application

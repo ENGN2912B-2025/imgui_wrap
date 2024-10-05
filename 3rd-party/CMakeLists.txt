@@ -46,6 +46,29 @@ if (USE_GLFW_GL3)
 
 endif(USE_GLFW_GL3)
 
+# ImPlot #####################################################################
+if (USE_IMPLOT)
+  add_library(implot STATIC
+    implot/implot.cpp
+    implot/implot_items.cpp
+    implot/implot_demo.cpp
+  )
+
+  target_include_directories(implot PUBLIC implot)
+
+  target_link_libraries(implot PUBLIC imgui)
+
+  # if (USE_GLFW_GL3)
+  #   target_compile_definitions(implot PUBLIC -DUSE_GLFW_GL3)
+  # endif()
+
+  # if (LINUX)
+  #   target_compile_options(implot
+  #     PRIVATE -Wno-unused-result -Wno-deprecated-enum-enum-conversion)
+  # endif()
+
+endif(USE_IMPLOT)
+
 # Dear ImGui Test Engine #####################################################
 if (USE_GUI_TEST_ENGINE)
 

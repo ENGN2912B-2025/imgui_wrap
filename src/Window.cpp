@@ -8,6 +8,10 @@
 
 #include <imgui.h>
 
+#ifdef USE_IMPLOT
+# include <implot.h>
+#endif
+
 #include <algorithm> // For std::remove
 
 namespace gui
@@ -34,6 +38,9 @@ namespace gui
     // Setup Dear ImGui context
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
+#ifdef USE_IMPLOT
+    ImPlot::CreateContext();
+#endif
 
     ImGuiIO& io = ImGui::GetIO();
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
@@ -68,6 +75,9 @@ namespace gui
     backend_->ShutdownCloseWindow();
     backend_.reset();
     // Delete context
+#ifdef USE_IMPLOT
+    ImPlot::DestroyContext();
+#endif
     ImGui::DestroyContext();
   }
 

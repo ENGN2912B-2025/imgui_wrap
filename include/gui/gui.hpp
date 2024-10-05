@@ -17,3 +17,7 @@
 
 #include <imgui.h>
 #include <imgui_stdlib.h>
+
+#ifdef USE_IMPLOT
+# include <implot.h>
+#endif //USE_IMPLOT

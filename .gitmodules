@@ -7,3 +7,6 @@
 [submodule "3rd-party/glfw"]
 	path = 3rd-party/glfw
 	url = ../../glfw/glfw.git
+[submodule "3rd-party/implot"]
+	path = 3rd-party/implot
+	url = ../../epezent/implot.git

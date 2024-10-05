@@ -8,7 +8,7 @@
 namespace gui
 {
   static constexpr int kDefaultChildFlags{
-    ImGuiChildFlags_Border
+    ImGuiChildFlags_Borders
   };
 
   ChildFrame::ChildFrame(

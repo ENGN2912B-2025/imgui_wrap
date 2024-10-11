@@ -9,6 +9,7 @@
 #include <imgui_internal.h> // For ImGui::GetWindowContentRegionMin/Max
 
 #include <stdexcept>
+#include <algorithm> // For std::remove
 
 namespace gui
 {

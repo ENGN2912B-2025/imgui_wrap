@@ -8,6 +8,8 @@
 
 #include <imgui.h>
 
+#include <algorithm> // For std::remove
+
 namespace gui
 {
   using DefaultSizer = VerticalSizer;

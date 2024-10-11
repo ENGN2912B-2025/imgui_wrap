@@ -2,6 +2,7 @@
 //
 
 #include <string>
+#include <cstdint> // For uint64_t
 
 namespace gui::util
 {

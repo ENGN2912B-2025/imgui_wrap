@@ -80,6 +80,12 @@ namespace gui
       }
     }
 
+    if (totalWeight <= 0)
+    { // if totalWeight is 0, all children have fixed size,
+      //  we set to 1 to avoid division by zero
+      totalWeight = 1;
+    }
+
     const int adjustSize{ (isVertical ? totalSize.y : totalSize.x) - fixedSize };
     const int adjustSpace{ isVertical ? space.y : space.x };
 

@@ -15,6 +15,8 @@ add_library(imgui_wrap STATIC
   impl/Backend.cpp
   impl/Backend_Null.cpp
   impl/util.cpp
+  # opengl widgets
+  gl/FrameBuffer.cpp
 )
 
 target_link_libraries(imgui_wrap PUBLIC imgui)
@@ -44,3 +46,8 @@ if (USE_GUI_TEST_ENGINE)
   endif(SHOW_TEST_ENGINE_WINDOWS)
 
 endif(USE_GUI_TEST_ENGINE)
+
+if (USE_GLAD)
+  target_link_libraries(imgui_wrap PUBLIC glad)
+  target_compile_definitions(imgui_wrap PUBLIC USE_GLAD)
+endif(USE_GLAD)

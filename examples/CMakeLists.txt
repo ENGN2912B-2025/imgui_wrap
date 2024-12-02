@@ -1,3 +1,4 @@
+add_subdirectory(hello_gl)
 add_subdirectory(hello_gui)
 add_subdirectory(hello_plot)
 add_subdirectory(hello_sizer)

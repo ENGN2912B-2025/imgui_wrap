@@ -2,8 +2,10 @@
 //
 #include "Backend_GLFW_GL3.hpp"
 
+
+#include <glad/gl.h>
+
 #include <imgui_impl_opengl3.h>
-#include <imgui_impl_opengl3_loader.h>
 #include <imgui_impl_glfw.h>
 #include <GLFW/glfw3.h>
 
@@ -119,10 +121,10 @@ namespace gui
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);  // 3.2+ only
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);            // Required on Mac
 #else
-    // GL 3.0 + GLSL 130
-    glsl_version = "#version 130";
+    // GL 3.1 + GLSL 140
+    glsl_version = "#version 140";
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
     //glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);  // 3.2+ only
     //glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);            // 3.0+ only
 #endif
@@ -137,6 +139,19 @@ namespace gui
     if (window == nullptr)
       return false;
     glfwMakeContextCurrent(window);
+
+  #ifdef USE_GLAD
+    // Load OpenGL and verify
+    int version = gladLoadGL(glfwGetProcAddress);
+    if (version == 0) {
+        printf("Failed to initialize OpenGL context\n");
+        return false;
+    }
+    // Successfully loaded OpenGL
+    printf("GLAD: Loaded OpenGL %d.%d\n",
+      GLAD_VERSION_MAJOR(version),
+      GLAD_VERSION_MINOR(version));
+  #endif
 
     // Adjust scale
     ImGuiIO& io = ImGui::GetIO();
@@ -158,6 +173,11 @@ namespace gui
   {
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init(glsl_version);
+
+    // Display GL Info
+    printf("OpenGL vendor: %s\n", glGetString(GL_VENDOR));
+    printf("OpenGL renderer: %s\n", glGetString(GL_RENDERER));
+    printf("OpenGL version: %s\n", glGetString(GL_VERSION));
   }
 
   bool Backend_GLFW_GL3::NewFrame()

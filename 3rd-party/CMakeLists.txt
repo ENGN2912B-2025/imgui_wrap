@@ -102,3 +102,13 @@ if (USE_GUI_TEST_ENGINE)
   endif()
 
 endif(USE_GUI_TEST_ENGINE)
+
+# GLAD OpenGL Loader-Generator ###############################################
+if (USE_GLAD)
+  add_library(glad STATIC
+    glad/src/gl.c
+  )
+
+  target_include_directories(glad PUBLIC glad/include)
+
+endif(USE_GLAD)

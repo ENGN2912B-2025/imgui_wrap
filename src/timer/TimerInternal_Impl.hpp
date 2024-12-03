@@ -31,9 +31,19 @@ namespace timer
     // Start the timer
     void start(size_t milliseconds, Callback callback)
     {
-      if (running_)
-      { // Stop the timer if it is already running
-        stop();
+      // Ensure the timer is stopped before starting a new one, and old thread
+      // is joined if it wasn't already
+      stop();
+
+      if (running_ || thread_.joinable())
+      { // The timer thread is still running, something is wrong
+        throw std::runtime_error{ "Timer thread is still running" };
+        return;
+      }
+
+      if (milliseconds == 0)
+      { // Do not start the timer if the period is zero
+        return;
       }
 
       // Start a new timer
@@ -72,9 +82,10 @@ namespace timer
     void stop()
     {
       running_ = false;
-      if (thread_.joinable())
-      {
+      if (thread_.joinable() && std::this_thread::get_id() != thread_.get_id())
+      { // join the thread if it is not the current thread
         thread_.join();
+        thread_ = std::thread{};
       }
     }
 

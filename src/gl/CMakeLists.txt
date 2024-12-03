@@ -2,6 +2,8 @@
 target_sources(imgui_wrap
   PUBLIC
     FrameBuffer.cpp
+    Program.cpp
+    Shader.cpp
 )
 
 if (USE_GLAD)

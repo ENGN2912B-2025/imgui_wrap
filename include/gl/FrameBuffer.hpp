@@ -3,10 +3,12 @@
 
 #pragma once
 
-#include <gui/Types.hpp>
+#include <math/Vec2.hpp>
 
-namespace gui::gl
+namespace gl
 {
+  using math::Vec2i;
+
   class FrameBuffer
   {
     Vec2i size_;
@@ -30,4 +32,4 @@ namespace gui::gl
     void generateFrameBuffer_();
   };
 
-} // namespace gui::gl
+} // namespace gl

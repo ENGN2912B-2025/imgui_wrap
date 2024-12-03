@@ -89,7 +89,7 @@ namespace gui
     }
 
     //Update size in case window was resized
-    size_ = make<Vec2i>(ImGui::GetIO().DisplaySize);
+    size_ = math::make<Vec2i>(ImGui::GetIO().DisplaySize);
 
     ImGui::NewFrame();
     return true;

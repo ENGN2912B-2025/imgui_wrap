@@ -92,7 +92,7 @@ namespace gui
 
   Vec2i Widget::getItemSpacing() const
   {
-    return make<Vec2i>(ImGui::GetStyle().ItemSpacing);
+    return math::make<Vec2i>(ImGui::GetStyle().ItemSpacing);
   }
 
   Vec2i Widget::getContentMin() const
@@ -100,7 +100,7 @@ namespace gui
     // This functionality was provided by ImGui::GetWindowContentRegionMin()
     // which is now deprecated. The following code is a workaround.
     ImGuiWindow* window = ImGui::GetCurrentContext()->CurrentWindow;
-    return gui::make<gui::Vec2i>(window->ContentRegionRect.Min - window->Pos);
+    return math::make<gui::Vec2i>(window->ContentRegionRect.Min - window->Pos);
   }
 
   Vec2i Widget::getContentMax() const
@@ -108,7 +108,7 @@ namespace gui
     // This functionality was provided by ImGui::GetWindowContentRegionMax()
     // which is now deprecated. The following code is a workaround.
     ImGuiWindow* window = ImGui::GetCurrentContext()->CurrentWindow;
-    return gui::make<gui::Vec2i>(window->ContentRegionRect.Max - window->Pos);
+    return math::make<gui::Vec2i>(window->ContentRegionRect.Max - window->Pos);
   }
 
   Vec2i Widget::getContentSize() const

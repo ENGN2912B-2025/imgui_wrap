@@ -1,12 +1,12 @@
 //  Copyright (c) 2024 Daniel Moreno. All rights reserved.
 //
 
-#include <gui/gl/gl.h>
-#include <gui/gl/FrameBuffer.hpp>
+#include <gl/gl.h>
+#include <gl/FrameBuffer.hpp>
 
 #include <stdexcept>
 
-namespace gui::gl
+namespace gl
 {
   FrameBuffer::FrameBuffer(const Vec2i& size) : size_{ size }
   {
@@ -83,4 +83,4 @@ namespace gui::gl
     }
   }
 
-}
+} // namespace gl

@@ -1,18 +1,33 @@
 //  Copyright (c) 2024 Daniel Moreno. All rights reserved.
 //
 
-#include <gui/gl/gl.h>
+#include <gl/gl.h>
+#include <gl/FrameBuffer.hpp>
 #include <gui/gui.hpp>
-#include <gui/gl/FrameBuffer.hpp>
+#include <timer/Timer.hpp>
 
 #include <cassert>
+#include <cmath>
 
 class TopFrame : public gui::ChildFrame
 {
-  gui::gl::FrameBuffer* frameBuffer_;
+  gl::FrameBuffer* frameBuffer_;
+  timer::Timer timer_;
+  float angle_;
 public:
-  TopFrame() : frameBuffer_{ nullptr }
+  TopFrame() :
+    frameBuffer_{ nullptr },
+    timer_{},
+    angle_{ 0.0f }
   {
+    timer_.start(100, [this]()
+    {
+      angle_ += 7.2f;
+      if (angle_ >= 360.0f)
+      {
+        angle_ -= 360.0f;
+      }
+    });
   }
 
   void render() override
@@ -21,17 +36,17 @@ public:
 
     if (!frameBuffer_)
     {
-      frameBuffer_ = new gui::gl::FrameBuffer();
+      frameBuffer_ = new gl::FrameBuffer();
     }
 
-    frameBuffer_->setSize(gui::make<gui::Vec2i>(ImGui::GetContentRegionAvail()));
+    frameBuffer_->setSize(math::make<gui::Vec2i>(ImGui::GetContentRegionAvail()));
 
-		ImGui::Image(
+    ImGui::Image(
       (ImTextureID)(intptr_t)frameBuffer_->getTexture(),
-			frameBuffer_->getSize().to<float>(),
-			ImVec2(0, 1),
-			ImVec2(1, 0)
-		);
+      frameBuffer_->getSize().to<float>(),
+      ImVec2(0, 1),
+      ImVec2(1, 0)
+    );
 
     drawGL();
   }
@@ -40,13 +55,13 @@ public:
   {
     if (frameBuffer_ != nullptr)
     {
+      configureViewport(-1, 1, -1 , 1);
+
       frameBuffer_->bind();
 
       glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-      glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
-      configureViewport(-1, 1, -1 , 1);
-      glLoadIdentity();
+      glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
       drawTriangle();
 
@@ -72,10 +87,11 @@ public:
 
   void drawTriangle()
   {
+    const float factor_{ std::cos(angle_ * 3.14159f / 180.0f) };
     glBegin(GL_POLYGON);
-    glColor3f(1, 0, 0); glVertex3f(-0.6, -0.75, 0.5);
-    glColor3f(0, 1, 0); glVertex3f(0.6, -0.75, 0);
-    glColor3f(0, 0, 1); glVertex3f(0, 0.75, 0);
+    glColor3f(1, 0, 0); glVertex3f(-0.6f * factor_, -0.75f, 0.0f);
+    glColor3f(0, 1, 0); glVertex3f( 0.6f * factor_, -0.75f, 0.0f);
+    glColor3f(0, 0, 1); glVertex3f( 0.0f * factor_,  0.75f, 0.0f);
     glEnd();
   }
 };

@@ -3,7 +3,9 @@
 #include "Backend_GLFW_GL3.hpp"
 
 
-#include <glad/gl.h>
+#ifdef USE_GLAD
+# include <glad/gl.h>
+#endif
 
 #include <imgui_impl_opengl3.h>
 #include <imgui_impl_glfw.h>

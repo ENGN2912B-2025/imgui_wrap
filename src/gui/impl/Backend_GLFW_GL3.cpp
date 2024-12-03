@@ -11,6 +11,10 @@
 #include <imgui_impl_glfw.h>
 #include <GLFW/glfw3.h>
 
+#ifdef USE_ROBOTO_WEBFONT
+# include <roboto_regular_webfont_ttf.hpp>
+#endif
+
 #include <cmath>
 
 #ifdef __linux__
@@ -164,7 +168,20 @@ namespace gui
     font_config.SizePixels = 17.0f * DpiScale;
     font_config.GlyphOffset.y = 1.0f * DpiScale;
     io.Fonts->Clear();
+
+#ifdef USE_ROBOTO_WEBFONT
+    // Load Roboto webfont
+    font_config.FontDataOwnedByAtlas = false;
+    io.Fonts->AddFontFromMemoryTTF(
+      roboto_regular_webfont_ttf_data,
+      roboto_regular_webfont_ttf_size,
+      font_config.SizePixels,
+      &font_config);
+#else
+    // Load default font
     io.Fonts->AddFontDefault(&font_config);
+#endif
+
     io.Fonts->Build();
     ImGui::GetStyle().ScaleAllSizes(DpiScale);
 

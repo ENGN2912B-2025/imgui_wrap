@@ -37,29 +37,28 @@ endfunction()
 function(FileEmbedAdd file)
 
     get_filename_component(base_filename ${file} NAME)
-    string(MAKE_C_IDENTIFIER ${base_filename} c_name)
+    string(MAKE_C_IDENTIFIER ${base_filename} cpp_name)
 
     set(embed_dir ${FILE_EMBED_DIR_})
-    set(generated_c ${embed_dir}/${c_name}.c)
+    set(generated_cpp ${embed_dir}/${cpp_name}.cpp)
 
     add_custom_command(
-            OUTPUT ${generated_c}
+            OUTPUT ${generated_cpp}
             COMMAND ${CMAKE_COMMAND}
             -DRUN_FILE_EMBED_GENERATE=1
             -DFILE_EMBED_GENERATE_SOURCE=${file}
-            -DFILE_EMBED_GENERATE_NAME=${c_name}
-            -DFILE_EMBED_GENERATE_DIR=${embed_dir}            
+            -DFILE_EMBED_GENERATE_NAME=${cpp_name}
+            -DFILE_EMBED_GENERATE_DIR=${embed_dir}
             -P ${FILE_EMBED_CMAKE_FILE_}
             MAIN_DEPENDENCY ${file}
     )
 
-    add_library(${c_name}_lib INTERFACE ${generated_c})
-    target_link_libraries(${FILE_EMBED_LIB_} PRIVATE ${c_name}_lib)
+    target_sources(${FILE_EMBED_LIB_} PUBLIC ${generated_cpp})
 
 endfunction()
 
 
-function(FileEmbedGenerate file c_name embed_dir)
+function(FileEmbedGenerate file cpp_name embed_dir)
 
     file(READ ${file} content HEX)
     message("Embed file: ${file}")
@@ -67,31 +66,31 @@ function(FileEmbedGenerate file c_name embed_dir)
     # Separate into individual bytes.
     string(REGEX MATCHALL "([A-Fa-f0-9][A-Fa-f0-9])" SEPARATED_HEX ${content})
 
-    set(output_c "")
+    set(output_cpp "")
 
     set(counter 0)
     foreach (hex IN LISTS SEPARATED_HEX)
-        string(APPEND output_c "0x${hex},")
+        string(APPEND output_cpp "0x${hex},")
         MATH(EXPR counter "${counter}+1")
         if (counter GREATER 16)
-            string(APPEND output_c "\n    ")
+            string(APPEND output_cpp "\n    ")
             set(counter 0)
         endif ()
     endforeach ()
 
-    set(output_c "
-#include \"${c_name}.h\"
-uint8_t ${c_name}_data[] = {
-    ${output_c}
+    set(output_cpp "
+#include \"${cpp_name}.hpp\"
+uint8_t ${cpp_name}_data[] = {
+    ${output_cpp}
 }\;
-uint32_t ${c_name}_size = sizeof(${c_name}_data)\;
+uint32_t ${cpp_name}_size = sizeof(${cpp_name}_data)\;
 ")
 
-    set(output_h "
+    set(output_hpp "
 #pragma once
 #include \"stdint.h\"
-extern uint8_t ${c_name}_data[]\;
-extern uint32_t ${c_name}_size\;
+extern uint8_t ${cpp_name}_data[]\;
+extern uint32_t ${cpp_name}_size\;
     ")
 
 
@@ -99,10 +98,10 @@ extern uint32_t ${c_name}_size\;
         file(MAKE_DIRECTORY ${embed_dir})
     endif ()
 
-    file(WRITE ${embed_dir}/${c_name}.c ${output_c})
-    message("Created: ${embed_dir}/${c_name}.c")
-    file(WRITE ${embed_dir}/${c_name}.h ${output_h})
-    message("Created: ${embed_dir}/${c_name}.h")
+    file(WRITE ${embed_dir}/${cpp_name}.cpp ${output_cpp})
+    message("Created: ${embed_dir}/${cpp_name}.cpp")
+    file(WRITE ${embed_dir}/${cpp_name}.hpp ${output_hpp})
+    message("Created: ${embed_dir}/${cpp_name}.hpp")
 
 endfunction()
 

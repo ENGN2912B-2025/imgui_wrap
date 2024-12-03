@@ -41,3 +41,8 @@ if (USE_GUI_TEST_ENGINE)
   endif(SHOW_TEST_ENGINE_WINDOWS)
 
 endif(USE_GUI_TEST_ENGINE)
+
+if (USE_ROBOTO_WEBFONT)
+  target_link_libraries(imgui_wrap PUBLIC file_embed)
+  target_compile_definitions(imgui_wrap PUBLIC USE_ROBOTO_WEBFONT)
+endif(USE_ROBOTO_WEBFONT)

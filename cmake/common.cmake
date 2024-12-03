@@ -37,3 +37,4 @@ endif()
 
 include(cmake/git_submodule.cmake)
 include(cmake/gui_executable.cmake)
+include(cmake/file_embed.cmake)

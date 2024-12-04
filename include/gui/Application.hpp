@@ -7,6 +7,7 @@
 
 #include <memory>
 #include <string>
+#include <atomic>
 
 namespace gui
 {
@@ -14,6 +15,7 @@ namespace gui
   {
     static Application* instance_;
     std::unique_ptr<Window> window_;
+    std::atomic<bool> running_;
   public:
     Application(const std::string& title = "Application");
     virtual ~Application();
@@ -25,6 +27,7 @@ namespace gui
     static Application* getInstancePtr() { return instance_;}
 
     void run();
+    void quit();
   };
 
 } // namespace gui

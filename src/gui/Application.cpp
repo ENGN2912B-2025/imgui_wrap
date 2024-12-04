@@ -86,7 +86,8 @@ namespace gui
   #endif
 
     // main loop
-    while (window_->renderBegin())
+    running_ = true;
+    while (running_ && window_->renderBegin())
     {
       window_->render();
 #if defined(USE_GUI_TEST_ENGINE) && defined(SHOW_TEST_ENGINE_WINDOWS)
@@ -152,6 +153,11 @@ namespace gui
     }
     //exit(EXIT_SUCCESS); // OK
   #endif
+  }
+
+  void Application::quit()
+  {
+    running_ = false;
   }
 
 } // namespace support

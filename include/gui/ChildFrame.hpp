@@ -12,12 +12,14 @@ namespace gui
   class ChildFrame : public Widget
   {
     int childFlags_;
+    int windowFlags_;
   public:
     ChildFrame(
       const std::string& name = {},
       const Vec2i& pos = {0, 0},
       const Vec2i& size = {0, 0},
-      int childFlags = -1);
+      int childFlags = -1,
+      int windowFlags = -1);
     virtual ~ChildFrame();
 
     bool renderBegin() override;

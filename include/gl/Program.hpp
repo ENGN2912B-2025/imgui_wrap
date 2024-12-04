@@ -6,6 +6,7 @@
 #include <gl/Shader.hpp>
 
 #include <vector>
+#include <string>
 
 namespace gl
 {
@@ -16,6 +17,8 @@ namespace gl
   public:
     Program();
     ~Program();
+
+    Program(const std::string& vertexShader, const std::string& fragmentShader);
 
     void attachShader(Shader shader);
     void link();

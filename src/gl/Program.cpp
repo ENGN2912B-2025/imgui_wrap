@@ -19,6 +19,18 @@ namespace gl
     glDeleteProgram(program_);
   }
 
+  Program::Program(const std::string& vertexShader, const std::string& fragmentShader)
+  {
+    program_ = glCreateProgram();
+    attachShader(Shader(GL_VERTEX_SHADER));
+    shaders_.back().source(vertexShader.c_str());
+    shaders_.back().compile();
+    attachShader(Shader(GL_FRAGMENT_SHADER));
+    shaders_.back().source(fragmentShader.c_str());
+    shaders_.back().compile();
+    link();
+  }
+
   void Program::attachShader(Shader shader)
   {
     shaders_.emplace_back(std::move(shader));

@@ -10,6 +10,7 @@
 #include <cassert>
 #include <cmath>
 #include <memory>
+#include <iostream>
 
 class TopFrame : public gui::ChildFrame
 {
@@ -53,28 +54,64 @@ public:
 
     if (!program_)
     {
-      const std::string vertexShader{
-        "#version 140\n"
-        "attribute vec3 aPos;\n"
-        "attribute vec3 aColor;\n"
-        "\n"
-        "varying vec3 ourColor;\n"
-        "\n"
-        "void main()\n"
-        "{\n"
-        "  gl_Position = vec4(aPos, 1.0);\n"
-        "  ourColor = aColor;\n"
-        "}\n"
-      };
-      const std::string fragmentShader{
-        "#version 140\n"
-        "varying vec3 ourColor;\n"
-        "\n"
-        "void main()\n"
-        "{\n"
-        "  gl_FragColor = vec4(ourColor, 1.0);\n"
-        "}\n"
-      };
+      const size_t glslVersion{ gl::Shader::getShadingLanguageVersion() };
+      //std::cout << "GLSL Version: " << glslVersion << std::endl;
+      std::string vertexShader, fragmentShader;
+      if (glslVersion == 140)
+      {
+        vertexShader =
+          "#version 140\n"
+          "attribute vec3 aPos;\n"
+          "attribute vec3 aColor;\n"
+          "\n"
+          "varying vec3 vColor;\n"
+          "\n"
+          "void main()\n"
+          "{\n"
+          "  gl_Position = vec4(aPos, 1.0);\n"
+          "  vColor = aColor;\n"
+          "}\n"
+          ;
+        fragmentShader =
+          "#version 140\n"
+          "varying vec3 vColor;\n"
+          "\n"
+          "void main()\n"
+          "{\n"
+          "  gl_FragColor = vec4(vColor, 1.0);\n"
+          "}\n"
+          ;
+      }
+      else if (glslVersion > 140)
+      {
+        vertexShader =
+          "#version 150\n"
+          "in vec3 aPos;\n"
+          "in vec3 aColor;\n"
+          "\n"
+          "out vec3 vColor;\n"
+          "\n"
+          "void main()\n"
+          "{\n"
+          "  gl_Position = vec4(aPos, 1.0);\n"
+          "  vColor = aColor;\n"
+          "}\n"
+          ;
+        fragmentShader =
+          "#version 150\n"
+          "in vec3 vColor;\n"
+          "out vec4 FragColor;\n"
+          "\n"
+          "void main()\n"
+          "{\n"
+          "  FragColor = vec4(vColor, 1.0);\n"
+          "}\n"
+          ;
+      }
+      else
+      {
+        throw std::runtime_error("Unsupported GLSL version");
+      }
       program_ = std::make_unique<gl::Program>(vertexShader, fragmentShader);
     }
 

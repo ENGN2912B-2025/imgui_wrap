@@ -18,5 +18,7 @@ namespace gl
 
     static Shader defaultVertexShader();
     static Shader defaultFragmentShader();
+
+    static size_t getShadingLanguageVersion();
   };
 } // namespace gl

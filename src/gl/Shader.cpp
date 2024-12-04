@@ -107,4 +107,21 @@ namespace gl
     return shader;
   }
 
+  size_t Shader::getShadingLanguageVersion()
+  {
+    const char* versionStr{
+      reinterpret_cast<const char*>(glGetString(GL_SHADING_LANGUAGE_VERSION)) };
+    if (!versionStr)
+    {
+      throw std::runtime_error{ "Failed to get GLSL version" };
+    }
+    // Assume format is like "1.40 - Build 31.0.101.5186" or "4.50 NVIDIA"
+    double version{ 0.0 };
+    if (std::sscanf(versionStr, "%lf", &version) != 1)
+    {
+      throw std::runtime_error{ "Failed to parse GLSL version" };
+    }
+    return static_cast<size_t>(version * 100);
+  }
+
 } // namespace gl

@@ -197,6 +197,7 @@ namespace gui
     printf("OpenGL vendor: %s\n", glGetString(GL_VENDOR));
     printf("OpenGL renderer: %s\n", glGetString(GL_RENDERER));
     printf("OpenGL version: %s\n", glGetString(GL_VERSION));
+    printf("GLSL version: %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
   }
 
   bool Backend_GLFW_GL3::NewFrame()

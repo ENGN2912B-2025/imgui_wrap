@@ -88,7 +88,7 @@ public:
   void drawTriangle()
   {
     const float factor_{ std::cos(angle_ * 3.14159f / 180.0f) };
-    glBegin(GL_POLYGON);
+    glBegin(GL_TRIANGLES);
     glColor3f(1, 0, 0); glVertex3f(-0.6f * factor_, -0.75f, 0.0f);
     glColor3f(0, 1, 0); glVertex3f( 0.6f * factor_, -0.75f, 0.0f);
     glColor3f(0, 0, 1); glVertex3f( 0.0f * factor_,  0.75f, 0.0f);

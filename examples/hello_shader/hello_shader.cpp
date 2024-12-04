@@ -18,7 +18,6 @@ class TopFrame : public gui::ChildFrame
   std::unique_ptr<gl::Program> program_;
   GLuint VBO, VAO;
   bool initialized_;
-  std::vector<float> vertices_;
   timer::Timer timer_;
   float angle_;
 public:
@@ -26,7 +25,6 @@ public:
     frameBuffer_{ nullptr },
     program_{ nullptr },
     initialized_{ false },
-    vertices_{},
     timer_{},
     angle_{ 0.0f }
   {
@@ -38,6 +36,14 @@ public:
         angle_ -= 360.0f;
       }
     });
+  }
+
+  ~TopFrame()
+  {
+    timer_.stop();
+
+    glDeleteVertexArrays(1, &VAO);
+    glDeleteBuffers(1, &VBO);
   }
 
   void initGL()
@@ -122,7 +128,7 @@ public:
 
     // Define the vertex data
     const float factor{ std::cos(angle_ * 3.14159f / 180.0f) };
-    vertices_ = std::vector<float>{
+    std::vector<float> vertices{
         // Positions         // Colors
         -0.6f * factor, -0.75f, 0.0f,  1.0f, 0.0f, 0.0f, // Red
          0.6f * factor, -0.75f, 0.0f,  0.0f, 1.0f, 0.0f, // Green
@@ -131,8 +137,8 @@ public:
 
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER,
-      sizeof(float)*vertices_.size(), vertices_.data(),
-      GL_STATIC_DRAW);
+      sizeof(float)*vertices.size(), vertices.data(),
+      GL_DYNAMIC_DRAW);
 
     // Position attribute
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
@@ -205,7 +211,7 @@ public:
   {
     // update the vertex data
     const float factor_{ std::cos(angle_ * 3.14159f / 180.0f) };
-    vertices_ = std::vector<float>{
+    std::vector<float> vertices{
         // Positions         // Colors
         -0.6f * factor_, -0.75f, 0.0f,  1.0f, 0.0f, 0.0f, // Red
          0.6f * factor_, -0.75f, 0.0f,  0.0f, 1.0f, 0.0f, // Green
@@ -219,7 +225,8 @@ public:
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
 
     // Update the vertex data
-    glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(float)*vertices_.size(), vertices_.data());
+    glBufferSubData(
+      GL_ARRAY_BUFFER, 0, sizeof(float)*vertices.size(), vertices.data());
 
     // Unbind the VBO
     glBindBuffer(GL_ARRAY_BUFFER, 0);

@@ -53,8 +53,8 @@ namespace gui
   // static member initialization
   Application* Application::instance_{ nullptr };
 
-  Application::Application(const std::string& title) :
-    window_{ std::make_unique<Window>(title) }
+  Application::Application(const std::string& title, const Vec2i& windowSize) :
+    window_{ std::make_unique<Window>(title, windowSize) }
   {
     if (instance_ == nullptr)
     {

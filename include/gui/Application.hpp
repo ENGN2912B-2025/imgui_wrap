@@ -17,7 +17,9 @@ namespace gui
     std::unique_ptr<Window> window_;
     std::atomic<bool> running_;
   public:
-    Application(const std::string& title = "Application");
+    Application(
+      const std::string& title = "Application",
+      const Vec2i& windowSize = {640, 480});
     virtual ~Application();
 
     Window& getWindow();

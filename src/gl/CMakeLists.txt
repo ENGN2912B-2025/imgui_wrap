@@ -4,6 +4,9 @@ target_sources(imgui_wrap
     FrameBuffer.cpp
     Program.cpp
     Shader.cpp
+    Shape.cpp
+    Circle.cpp
+    Sphere.cpp
 )
 
 if (USE_GLAD)

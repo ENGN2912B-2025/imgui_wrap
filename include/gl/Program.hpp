@@ -32,7 +32,5 @@ namespace gl
     void setUniform4f(const char* name, const std::array<float,4>& value) const;
 
     unsigned get() const { return program_; }
-
-    static Program defaultProgram();
   };
 } // namespace gl

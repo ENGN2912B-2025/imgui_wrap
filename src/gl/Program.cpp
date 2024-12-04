@@ -91,13 +91,4 @@ namespace gl
     glUniform4f(location, value[0], value[1], value[2], value[3]);
   }
 
-  Program Program::defaultProgram()
-  {
-    Program program;
-    program.attachShader(Shader::defaultVertexShader());
-    program.attachShader(Shader::defaultFragmentShader());
-    program.link();
-    return program;
-  }
-
 } // namespace gl

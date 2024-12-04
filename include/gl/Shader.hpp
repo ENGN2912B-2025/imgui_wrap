@@ -18,9 +18,6 @@ namespace gl
     void compile();
     unsigned get() const { return shader_; }
 
-    static Shader defaultVertexShader();
-    static Shader defaultFragmentShader();
-
     static size_t getShadingLanguageVersion();
   };
 } // namespace gl

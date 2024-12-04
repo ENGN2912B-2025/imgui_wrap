@@ -64,6 +64,33 @@ namespace gl
     glUseProgram(0);
   }
 
+  void Program::setUniform1f(const char* name, float value) const
+  {
+    const int location{ glGetUniformLocation(program_, name) };
+    glUniform1f(location, value);
+  }
+
+  void Program::setUniform2f(
+    const char* name, const std::array<float, 2>& value) const
+  {
+    const int location{ glGetUniformLocation(program_, name) };
+    glUniform2f(location, value[0], value[1]);
+  }
+
+  void Program::setUniform3f(
+    const char* name, const std::array<float, 3>& value) const
+  {
+    const int location{ glGetUniformLocation(program_, name) };
+    glUniform3f(location, value[0], value[1], value[2]);
+  }
+
+  void Program::setUniform4f(
+    const char* name, const std::array<float, 4>& value) const
+  {
+    const int location{ glGetUniformLocation(program_, name) };
+    glUniform4f(location, value[0], value[1], value[2], value[3]);
+  }
+
   Program Program::defaultProgram()
   {
     Program program;

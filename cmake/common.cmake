@@ -25,7 +25,7 @@ if(MSVC)
   add_compile_options(/permissive-)
 endif()
 
-if(XCODE)
+if(APPLE)
   option(XCODE_UNIVERSAL_APP "Universal MacOS executable")
   if (XCODE_UNIVERSAL_APP)
     # Enable building of universal MacOS executable (works both on Intel

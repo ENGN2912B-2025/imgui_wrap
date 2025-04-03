@@ -104,7 +104,7 @@ int main(int argc, char** argv)
   }
 
   // Create the application
-  gui::Application app{ "GUI: Hello Sizer!" };
+  gui::Application app{ "GUI: Hello Plot!" };
 
   // Create the main window
   MainWindow mainWindow;

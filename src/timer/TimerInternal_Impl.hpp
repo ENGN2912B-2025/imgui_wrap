@@ -1,10 +1,11 @@
-//  Copyright (c) 2024 Daniel Moreno. All rights reserved.
+//  Copyright (c) 2024-2025 Daniel Moreno. All rights reserved.
 //
 
 #pragma once
 
 #include <timer/Timer.hpp>
 
+#include <chrono>
 #include <atomic>
 #include <thread>
 

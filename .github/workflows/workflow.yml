@@ -14,11 +14,11 @@ jobs:
 
   build:
     name: Ubuntu-Build (GLFW_GL3)
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
 
     - name: Checkout source code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v4.2.2
 
     - name: Install Linux Dependencies
       run: |
@@ -35,7 +35,7 @@ jobs:
 
   build-tests:
     name: Ubuntu-Build (Tests)
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     env:
       PRESET_NAME: gcc-linux-release
@@ -44,7 +44,7 @@ jobs:
     steps:
 
     - name: Checkout source code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v4.2.2
 
     - name: Configure and Build
       run: |

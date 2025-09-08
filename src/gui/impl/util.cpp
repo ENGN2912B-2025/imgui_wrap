@@ -1,7 +1,9 @@
-//  Copyright (c) 2024 Daniel Moreno. All rights reserved.
+//  Copyright (c) 2024-2025 Daniel Moreno. All rights reserved.
 //
 
 #include "util.hpp"
+
+#include <cstdlib>
 
 namespace gui::util
 {

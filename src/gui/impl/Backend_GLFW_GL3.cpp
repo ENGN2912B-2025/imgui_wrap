@@ -1,4 +1,4 @@
-//  Copyright (c) 2024 Daniel Moreno. All rights reserved.
+//  Copyright (c) 2024-2025 Daniel Moreno. All rights reserved.
 //
 #include "Backend_GLFW_GL3.hpp"
 
@@ -16,6 +16,7 @@
 #endif
 
 #include <cmath>
+#include <cstdio>
 
 #ifdef __linux__
 # include <unistd.h> // sleep

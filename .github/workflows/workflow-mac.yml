@@ -1,8 +1,6 @@
-name: Build and Test (Ubuntu)
+name: Build and Test (macOS)
 
 on:
-  push:
-    branches: [ main ]
   workflow_dispatch: # manually trigger the workflow
 
 permissions:
@@ -12,33 +10,23 @@ permissions:
 
 jobs:
 
-  build-ubuntu:
-    name: Ubuntu-Build (GLFW_GL3)
-    runs-on: ubuntu-24.04
+  build-macos:
+    name: macOS-Build (GLFW_GL3)
+    runs-on: macos-15
     steps:
 
     - name: Checkout source code
       uses: actions/checkout@v5.0.0
 
-    - name: Install Linux Dependencies
-      run: |
-        sudo apt update
-        sudo apt install  \
-          libxrandr-dev   \
-          libxinerama-dev \
-          libxcursor-dev  \
-          libxi-dev       \
-          libgl-dev
-
     - name: Configure and Build
       run: ${{github.workspace}}/build.sh
 
-  build-tests-ubuntu:
-    name: Ubuntu-Build (Tests)
-    runs-on: ubuntu-24.04
+  build-tests-macos:
+    name: macOS-Build (Tests)
+    runs-on: macos-15
 
     env:
-      PRESET_NAME: gcc-linux-release
+      PRESET_NAME: clang-macos-release
       CMAKE_CONFIG_OPTIONS: -DUSE_GLFW_GL3=0 -DUSE_GUI_TEST_ENGINE=1
 
     steps:
